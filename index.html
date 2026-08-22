@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qué auto compro</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="head">
+  <div class="head-main">
+    <h1>Qué auto compro</h1>
+    <p class="sub">Comparador de autos híbridos y eléctricos a la venta en Chile: precio, dimensiones, rendimiento y costo por kilómetro, con un score configurable.</p>
+  </div>
+  <div class="head-meta">
+    <span id="meta-count"></span>
+    <span id="meta-fecha"></span>
+  </div>
+</header>
+
+<section class="filtros" aria-label="Filtros">
+  <div class="f-row">
+    <label class="f-search">
+      <span class="f-label">Buscar</span>
+      <input type="search" id="q" placeholder="modelo, versión, nota…" autocomplete="off">
+    </label>
+
+    <fieldset class="f-chips">
+      <legend class="f-label">Origen marca</legend>
+      <div id="chips-origen" class="chips"></div>
+    </fieldset>
+
+    <fieldset class="f-chips">
+      <legend class="f-label">Marca</legend>
+      <div id="chips-marca" class="chips"></div>
+    </fieldset>
+
+    <fieldset class="f-chips">
+      <legend class="f-label">Tipo</legend>
+      <div id="chips-tipo" class="chips"></div>
+    </fieldset>
+
+    <fieldset class="f-chips">
+      <legend class="f-label">Carrocería</legend>
+      <div id="chips-carroceria" class="chips"></div>
+    </fieldset>
+  </div>
+
+  <div class="f-row f-row-ranges">
+    <label class="f-range">
+      <span class="f-label">Precio nuevo máx.</span>
+      <input type="range" id="r-precio" min="15000000" max="50000000" step="500000">
+      <output id="o-precio"></output>
+    </label>
+    <label class="f-range">
+      <span class="f-label">km/l mixto mín.</span>
+      <input type="range" id="r-kml" min="0" max="30" step="0.5" value="0">
+      <output id="o-kml"></output>
+    </label>
+    <label class="f-range">
+      <span class="f-label">Largo máx.</span>
+      <input type="range" id="r-largo" min="4100" max="4900" step="10">
+      <output id="o-largo"></output>
+    </label>
+    <label class="f-range">
+      <span class="f-label">Maletero mín.</span>
+      <input type="range" id="r-maletero" min="0" max="900" step="10" value="0">
+      <output id="o-maletero"></output>
+    </label>
+
+    <div class="f-toggles">
+      <label class="switch"><input type="checkbox" id="t-preseleccion"> <span>Solo la preselección</span></label>
+      <label class="switch"><input type="checkbox" id="t-dims" checked> <span>Ver dimensiones</span></label>
+      <button type="button" id="reset" class="btn-reset">Limpiar filtros</button>
+    </div>
+  </div>
+
+  <div class="f-row f-pesos">
+    <span class="f-label">Peso de cada criterio en el score</span>
+    <div id="pesos" class="pesos"></div>
+    <button type="button" id="reset-pesos" class="btn-reset">Pesos por defecto</button>
+  </div>
+
+  <div class="f-row f-supuestos">
+    <span class="f-label">Supuestos para el costo por 100 km:</span>
+    <label>bencina 93 <input type="number" id="s-bencina" step="10"> $/L</label>
+    <label>electricidad <input type="number" id="s-kwh" step="5"> $/kWh</label>
+    <label>base de cálculo
+      <select id="s-base">
+        <option value="mixto">ciclo mixto</option>
+        <option value="ciudad">ciclo ciudad</option>
+      </select>
+    </label>
+  </div>
+</section>
+
+<div class="tabla-wrap">
+  <table id="tabla">
+    <thead><tr id="thead-row"></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <p id="vacio" class="vacio" hidden>Ningún auto pasa esos filtros.</p>
+</div>
+
+<aside id="detalle" class="detalle" hidden aria-live="polite"></aside>
+
+<section class="nota-metodo">
+  <h2>Cómo leer esta tabla</h2>
+  <p id="nota-rendimiento"></p>
+  <ul>
+    <li id="nota-score"></li>
+    <li id="nota-costo"></li>
+    <li id="nota-espacio"></li>
+    <li id="nota-marca"></li>
+    <li id="nota-alcance"></li>
+    <li id="nota-origen"></li>
+    <li><strong>Precio nuevo</strong> es precio de lista publicado. Donde la marca solo publica el precio con financiamiento (Hyundai con Amicar) uso el precio de lista y lo digo en la nota del modelo.</li>
+    <li><strong>Precio usado</strong> marcado con <span class="est">~</span> es una estimación, no un precio observado. Sin marca, es un precio real visto en chileautos.</li>
+    <li><strong>Historial de precios</strong> arranca prácticamente hoy: solo el Corolla Cross tiene un punto anterior verificable (lista 2025 vs 2026). Cada vez que corras <code>scripts/add-snapshot.mjs</code> la serie crece.</li>
+  </ul>
+</section>
+
+<script src="data/autos.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
