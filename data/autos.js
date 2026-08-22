@@ -83,15 +83,15 @@ window.AUTOS_DATA = {
       "id": "toyota-yaris-cross-hev",
       "marca": "Toyota",
       "modelo": "Yaris Cross",
-      "version": "1.5 XI Hybrid 4x2 CVT",
+      "version": "1.5 XG Hybrid 4x2 eCVT",
       "anio": 2026,
       "tipo": "HEV",
       "carroceria": "SUV subcompacto",
       "origen": "Indonesia",
-      "precioNuevo": 24590000,
-      "precioNuevoNota": "Precio de lista en la tienda oficial de Toyota Chile.",
-      "precioUsado": 19500000,
-      "precioUsadoNota": "Estimado: HEV recién llegado al mercado, casi no hay stock usado. Los usados que aparecen en chileautos son bencineros (un 2025 XI 5MT se vio a $17.490.000).",
+      "precioNuevo": 25490000,
+      "precioNuevoNota": "Precio al contado de la XG, la versión más equipada. La XI, de entrada, queda en $23.090.000 al contado y $21.490.000 con financiamiento. Toyota no publica precio de lista de la XG.",
+      "precioUsado": 22000000,
+      "precioUsadoNota": "Estimado: el HEV lleva poco en el mercado y casi no hay stock usado.",
       "precioUsadoEstimado": true,
       "dim": {
         "largo": 4310,
@@ -122,12 +122,12 @@ window.AUTOS_DATA = {
         },
         {
           "fecha": "2026-08-22",
-          "precio": 21490000,
+          "precio": 24290000,
           "clase": "nuevo",
-          "fuente": "tienda.toyota.cl (financiado)"
+          "fuente": "concesionarios Toyota — XG financiada"
         }
       ],
-      "notas": "El más chico y más barato de la preselección. Maletero grande para su largo.",
+      "notas": "La XG suma Toyota Safety Sense completo — pre-colisión, crucero adaptativo, luces altas automáticas y mantención de carril — más el tablero digital LED continuo, nada de lo cual trae la XI. Es el híbrido más chico de la tabla y el de maletero más grande para su largo.",
       "fuentes": [
         {
           "titulo": "Toyota Chile — Yaris Cross Hybrid",
@@ -140,11 +140,15 @@ window.AUTOS_DATA = {
         {
           "titulo": "Tienda Toyota Chile — Yaris Cross Híbrido",
           "url": "https://tienda.toyota.cl/index.php?id_product=785&rewrite=yaris-cross&controller=product"
+        },
+        {
+          "titulo": "Salfa Automotriz — Yaris Cross HEV",
+          "url": "https://www.salfaautomotriz.cl/web/guest/detalle/-/vehiculo/autos/toyota/yaris-cross-xi-1-5-cvt-hibrido"
         }
       ],
       "paisMarca": "Japonesa",
-      "precioFinanciado": 21490000,
-      "precioFinanciadoNota": "Bono total de $3.100.000: $1.000.000 de marca más $2.100.000 del plan Renueve de MAF. Al contado queda en $23.590.000."
+      "precioFinanciado": 24290000,
+      "precioFinanciadoNota": "Precio de la XG con financiamiento de marca."
     },
     {
       "id": "toyota-corolla-cross-xei",
