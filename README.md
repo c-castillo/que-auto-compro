@@ -74,7 +74,7 @@ cada auto aparece en su panel de detalle. Están ordenados por importancia:
 | **30** | **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
 | **30** | **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
 | **25** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
-| **10** | **Espacio interior** | Proxy: altura del vehículo (55%) + distancia entre ejes (45%), normalizados contra el rango de la tabla |
+| **20** | **Espacio interior** | Proxy: **altura de cabina** (60%) + distancia entre ejes (40%). La altura de cabina es el alto total menos el despeje al piso |
 | **5** | **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
 
 Todo es editable en `data/autos.js` → `meta.score`: los pesos por defecto, los niveles de marca
@@ -112,12 +112,15 @@ Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
 
 2. **Espacio y tamaño se contradicen por definición.** Uno premia autos altos y con buena
    distancia entre ejes; el otro premia autos chicos, así que en parte se cancelan. Con los pesos
-   por defecto (10 y 5) pesan poco, y el ranking lo deciden costo, precio y marca. Si ir cómodo
+   por defecto (20 y 5) el espacio manda sobre el estacionar, y el ranking lo deciden costo, precio y marca. Si ir cómodo
    pasa a importar, sube *Espacio* — el orden cambia bastante.
-3. **El criterio de espacio es un proxy, no un dato.** No hay altura libre al techo publicada
-   para casi ningún modelo en Chile. Sirve para descartar, no para decidir — sobre todo si eres
-   alto. Antes de comprar, siéntate en los finalistas con el asiento abajo y atrás del todo, y ojo
-   con el techo panorámico: descuenta ~3 cm.
+3. **El criterio de espacio es un proxy, no un dato.** No hay altura libre al techo publicada para
+   casi ningún modelo en Chile. Uso **altura de cabina** = alto total − despeje al piso, que es
+   mejor proxy que el alto pelado: el Yaris Cross mide 1.615 mm pero 210 son despeje, así que por
+   dentro es más bajo (1.405) que un Corolla Cross de 1.620 con 160 de despeje (1.460). Tres
+   modelos no publican despeje (Fronx, Across, MG3) y usan la mediana del set; van marcados.
+   Aun así sirve para descartar, no para decidir: siéntate en los finalistas con el asiento abajo
+   y atrás del todo, y ojo con el techo panorámico, que descuenta ~3 cm.
 
 ## Cargador en casa
 

@@ -20,12 +20,12 @@ window.AUTOS_DATA = {
     "notaOrigen": "La columna \"Origen marca\" permite filtrar por procedencia. Ojo: el país de la marca no es el de fabricación — el Kia EV5 es coreano de marca pero se fabrica en China, y el Corolla Cross es japonés de marca pero viene de Brasil. La columna \"Origen\" del detalle indica dónde se fabrica.",
     "notaAlcance": "La tabla ya no es solo de SUV: incluye hatchback y sedán híbridos, que suelen ser más baratos y eficientes por el mismo tren motriz. Filtra por Carrocería si quieres volver a ver solo SUV.",
     "score": {
-      "descripcion": "Puntaje 0-100 compuesto por cinco criterios. Pesos por defecto: precio 30, marca 30, costo por 100 km 25, espacio 10 y facilidad de estacionar 5. Ajustables con los sliders.",
+      "descripcion": "Puntaje 0-100 compuesto por cinco criterios ponderados. Los pesos no tienen que sumar 100: el puntaje se normaliza por su total. Por defecto: precio 30, marca 30, costo por 100 km 25, espacio 20 y facilidad de estacionar 5.",
       "pesos": {
         "precio": 30,
         "marca": 30,
         "costo": 25,
-        "espacio": 10,
+        "espacio": 20,
         "tamano": 5
       },
       "referencia": {
@@ -34,9 +34,10 @@ window.AUTOS_DATA = {
         "ancho": 1790,
         "alto": 1650,
         "ejes": 2650,
-        "nota": "El criterio de tamaño mide cuánto se pasa cada modelo de esta huella: igual o más chico puntúa 100. Cambia estas medidas en meta.score.referencia por las del auto que hoy te resulta cómodo de estacionar."
+        "nota": "El criterio de tamaño mide cuánto se pasa cada modelo de esta huella: igual o más chico puntúa 100. Cambia estas medidas en meta.score.referencia por las del auto que hoy te resulta cómodo de estacionar.",
+        "despeje": 223
       },
-      "notaEspacio": "No existe dato público de altura libre al techo para la mayoría de estos modelos en Chile, así que el criterio usa dos proxies: altura del vehículo (55%) y distancia entre ejes (45%). Para un conductor alto sirve para descartar, no para decidir: antes de comprar siéntate en los 3 finalistas, con el asiento en su posición más baja y atrasada, y ojo con el techo panorámico — descuenta unos 3 cm de altura libre.",
+      "notaEspacio": "No hay altura libre al techo publicada para casi ningún modelo en Chile, así que este criterio usa dos proxies: altura de cabina (60%) y distancia entre ejes (40%). La altura de cabina es la altura total menos el despeje al piso, que es mejor proxy que la altura pelada: el Yaris Cross mide 1.615 mm pero 210 son despeje, así que por dentro es más bajo que un Corolla Cross de 1.620 con 160 de despeje. Aun así es un proxy, no un dato: sirve para descartar, no para decidir. Antes de comprar siéntate en los finalistas con el asiento abajo y atrás del todo, y ojo con el techo panorámico, que descuenta unos 3 cm.",
       "marcaTier": {
         "Toyota": 100,
         "Lexus": 100,

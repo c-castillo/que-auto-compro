@@ -147,15 +147,31 @@
     return v == null ? null : 100 - norm(v, rangoCosto());
   };
 
-  // Espacio interior: sin dato público de altura libre al techo, se usa la altura
-  // del vehículo y la distancia entre ejes como proxies. Ver meta.score.notaEspacio.
+  /* Espacio interior. Sin altura libre al techo publicada, el proxy es la altura de
+     CABINA (alto menos despeje al piso) más la distancia entre ejes. Usar el alto pelado
+     premia el despeje, que no te sirve de nada para ir sentado: el Yaris Cross mide 1.615
+     con 210 de despeje y por dentro es más bajo que un Corolla Cross de 1.620 con 160. */
+  const despejeTipico = (() => {
+    const v = AUTOS.map(c => c.dim.despeje).filter(x => x != null).sort((a, b) => a - b);
+    return v[Math.floor(v.length / 2)];
+  })();
+  function alturaCabina(c) {
+    if (c.dim.alto == null) return null;
+    return { valor: c.dim.alto - (c.dim.despeje ?? despejeTipico), derivado: c.dim.despeje == null };
+  }
+  const R2 = { cabina: (() => {
+    const v = AUTOS.map(c => alturaCabina(c)).filter(x => x).map(x => x.valor);
+    return [Math.min(...v), Math.max(...v)];
+  })() };
+
   function subEspacio(c) {
-    const a = c.dim.alto == null ? null : norm(c.dim.alto, R.alto);
+    const cab = alturaCabina(c);
+    const a = cab == null ? null : norm(cab.valor, R2.cabina);
     const e = c.dim.ejes == null ? null : norm(c.dim.ejes, R.ejes);
     if (a == null && e == null) return null;
     if (a == null) return e;
     if (e == null) return a;
-    return 0.55 * a + 0.45 * e;
+    return 0.60 * a + 0.40 * e;
   }
 
   // Precio de la versión full equipo: el más barato puntúa 100.
@@ -202,7 +218,12 @@
 
     {
       key: 'espacio', label: 'Espacio interior', fn: subEspacio,
-      pista: c => `alto ${delta(c.dim.alto, S.referencia.alto)} · entre ejes ${delta(c.dim.ejes, S.referencia.ejes)} vs referencia`
+      pista: c => {
+        const cab = alturaCabina(c);
+        const ref = S.referencia.alto - S.referencia.despeje;
+        return (cab ? `cabina ${cab.valor} mm (${delta(cab.valor, ref)}${cab.derivado ? ', despeje estimado' : ''})` : 'sin datos')
+          + ` · entre ejes ${delta(c.dim.ejes, S.referencia.ejes)} vs referencia`;
+      }
     },
 
     {
@@ -487,6 +508,7 @@
       ['Maletero', d.maletero ? d.maletero + ' L' + (d.maleteroMax ? ` (${d.maleteroMax} L abatido)` : '')
         : (d.maleteroMax ? `hasta ${d.maleteroMax} L` : '—')],
       ['Despeje al piso', mm(d.despeje)],
+      ['Altura de cabina', (() => { const k = alturaCabina(c); return k ? mm(k.valor) + (k.derivado ? ' (despeje estimado)' : '') : '—'; })()],
       ['Potencia / torque', c.potencia == null ? '—' : `${c.potencia} HP · ${c.torque ?? '?'} Nm`],
       ['Transmisión / tracción', `${c.transmision} · ${c.traccion}`],
       ['Rendimiento ciudad', (() => {
