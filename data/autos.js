@@ -75,7 +75,7 @@ window.AUTOS_DATA = {
       "geocoder": "https://nominatim.openstreetmap.org/reverse",
       "nota": "El precio por defecto es el de la Shell de Carlos Antúnez 2490 en Providencia para 93 octanos. Con el botón \"usar mi ubicación\" la página pide tu posición, resuelve la comuna y trae los precios reales de 93 de esa comuna desde bencinaenlinea.cl (CNE), usando la mediana de las estaciones. Nada de eso sale del navegador: no hay servidor propio ni se guarda tu ubicación."
     },
-    "notaPrecio": "La columna Precio muestra el precio más barato publicado por la marca — normalmente el que exige financiamiento propio o bonos. El tooltip trae el precio de lista cuando la marca publica ambos. Donde solo hay un precio, los dos coinciden.",
+    "notaPrecio": "La columna Precio muestra el precio más barato publicado por la marca — normalmente el que exige financiamiento propio o bonos; va con una \"f\" volada. El tooltip trae el precio de lista cuando la marca publica ambos. Ojo: los precios de Toyota están verificados contra la tienda oficial y un concesionario (agosto 2026); los del resto de las marcas vienen de notas de lanzamiento y pueden estar desactualizados o no incluir bonos vigentes. Cotiza antes de decidir.",
     "notaCarga": "Sin cargador en casa, un eléctrico se carga en red pública, que en Chile cuesta entre $200 y $400 por kWh (Enel X Way $315, Copec Voltex ~$200) contra unos $160 de la tarifa residencial. Por eso el interruptor \"cargo en casa\" no es cosmético: cambia el precio del kWh con que se calcula el costo por 100 km y prácticamente duplica el de los eléctricos. Con el interruptor apagado, además, los enchufables (PHEV) se penalizan un 20% en rendimiento, porque sin cargarlos andan casi siempre a bencina."
   },
   "autos": [
@@ -88,9 +88,9 @@ window.AUTOS_DATA = {
       "tipo": "HEV",
       "carroceria": "SUV subcompacto",
       "origen": "Indonesia",
-      "precioNuevo": 23490000,
-      "precioNuevoNota": "Precio de lista Toyota Chile para la versión HEV. La versión bencinera parte en $20.790.000.",
-      "precioUsado": 21000000,
+      "precioNuevo": 24590000,
+      "precioNuevoNota": "Precio de lista en la tienda oficial de Toyota Chile.",
+      "precioUsado": 19500000,
       "precioUsadoNota": "Estimado: HEV recién llegado al mercado, casi no hay stock usado. Los usados que aparecen en chileautos son bencineros (un 2025 XI 5MT se vio a $17.490.000).",
       "precioUsadoEstimado": true,
       "dim": {
@@ -119,6 +119,12 @@ window.AUTOS_DATA = {
           "precio": 23490000,
           "clase": "nuevo",
           "fuente": "toyota.cl / rutamotor"
+        },
+        {
+          "fecha": "2026-08-22",
+          "precio": 21490000,
+          "clase": "nuevo",
+          "fuente": "tienda.toyota.cl (financiado)"
         }
       ],
       "notas": "El más chico y más barato de la preselección. Maletero grande para su largo.",
@@ -130,9 +136,15 @@ window.AUTOS_DATA = {
         {
           "titulo": "Rutamotor — Llega a Chile el Yaris Cross HEV",
           "url": "https://www.rutamotor.com/llega-a-chile-el-nuevo-toyota-yaris-cross-hev-el-modelo-de-entrada-en-la-categoria-hibrido-convencional/"
+        },
+        {
+          "titulo": "Tienda Toyota Chile — Yaris Cross Híbrido",
+          "url": "https://tienda.toyota.cl/index.php?id_product=785&rewrite=yaris-cross&controller=product"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "precioFinanciado": 21490000,
+      "precioFinanciadoNota": "Bono total de $3.100.000: $1.000.000 de marca más $2.100.000 del plan Renueve de MAF. Al contado queda en $23.590.000."
     },
     {
       "id": "toyota-corolla-cross-xei",
@@ -144,7 +156,7 @@ window.AUTOS_DATA = {
       "carroceria": "SUV compacto",
       "origen": "Brasil",
       "precioNuevo": 27990000,
-      "precioNuevoNota": "En Chile el Corolla Cross ya solo se vende híbrido.",
+      "precioNuevoNota": "Precio de lista en la tienda oficial de Toyota Chile.",
       "precioUsado": 23590000,
       "precioUsadoNota": "Precio real visto en chileautos: 2025 1.8 HEV XEI CVT a $23.590.000. Unidades 2024 desde ~$17.9M según kilometraje.",
       "precioUsadoEstimado": false,
@@ -186,6 +198,12 @@ window.AUTOS_DATA = {
           "precio": 23590000,
           "clase": "usado",
           "fuente": "chileautos — unidad 2025 XEI HEV"
+        },
+        {
+          "fecha": "2026-08-22",
+          "precio": 25490000,
+          "clase": "nuevo",
+          "fuente": "tienda.toyota.cl (financiado)"
         }
       ],
       "notas": "El punto dulce del segmento: maletero de 473 L y el rendimiento mixto más honesto de la lista (23,3 km/l medidos en el mismo ciclo que declara la ciudad).",
@@ -197,9 +215,15 @@ window.AUTOS_DATA = {
         {
           "titulo": "chileautos — precios Corolla Cross 2026",
           "url": "https://www.chileautos.cl/toyota/corolla-cross/precio/2026/"
+        },
+        {
+          "titulo": "Tienda Toyota Chile — Corolla Cross Híbrido",
+          "url": "https://tienda.toyota.cl/index.php?id_product=529&rewrite=corolla-cross&controller=product"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "precioFinanciado": 25490000,
+      "precioFinanciadoNota": "Bono total de $2.500.000: $1.500.000 de marca más $1.000.000 por financiar con MAF. Al contado queda en $26.490.000."
     },
     {
       "id": "toyota-corolla-cross-seg",
@@ -210,9 +234,9 @@ window.AUTOS_DATA = {
       "tipo": "HEV",
       "carroceria": "SUV compacto",
       "origen": "Brasil",
-      "precioNuevo": 29990000,
-      "precioNuevoNota": "Agrega llantas 18\", faros bi-LED secuenciales y más asistencias sobre la XEI.",
-      "precioUsado": 25200000,
+      "precioNuevo": 27990000,
+      "precioNuevoNota": "Precio único, sin bono de financiamiento (concesionario Kovacs Toyota, agosto 2026). El valor anterior de $29.990.000 que tenía esta tabla estaba desactualizado.",
+      "precioUsado": 24000000,
       "precioUsadoNota": "Estimado a partir del precio usado real de la XEI más el delta de equipamiento.",
       "precioUsadoEstimado": true,
       "dim": {
@@ -247,6 +271,12 @@ window.AUTOS_DATA = {
           "precio": 29990000,
           "clase": "nuevo",
           "fuente": "brunofritsch.cl"
+        },
+        {
+          "fecha": "2026-08-22",
+          "precio": 27990000,
+          "clase": "nuevo",
+          "fuente": "kovacstoyota.cl"
         }
       ],
       "notas": "En chileautos todavía aparecen unidades 2024 con el motor 2.0 SEG. Ese motor ya no se vende nuevo acá.",
@@ -254,6 +284,10 @@ window.AUTOS_DATA = {
         {
           "titulo": "chileautos — precios Corolla Cross 2026",
           "url": "https://www.chileautos.cl/toyota/corolla-cross/precio/2026/"
+        },
+        {
+          "titulo": "Kovacs Toyota — Corolla Cross HEV",
+          "url": "https://kovacstoyota.cl/suv/corolla-cross-hev.html"
         }
       ],
       "paisMarca": "Japonesa"
