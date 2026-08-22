@@ -13,6 +13,7 @@
     q: '',
     origenes: new Set(),
     marcas: new Set(),
+    marcasVetadas: new Set(),
     tipos: new Set(),
     carrocerias: new Set(),
     precioMax: null,
@@ -367,6 +368,7 @@
     const q = state.q.trim().toLowerCase();
     return AUTOS.filter(c => {
       if (state.origenes.size && !state.origenes.has(c.paisMarca)) return false;
+      if (state.marcasVetadas.has(c.marca)) return false;   // veto: fuera de la tabla, sin importar el score
       if (state.marcas.size && !state.marcas.has(c.marca)) return false;
       if (state.tipos.size && !state.tipos.has(c.tipo)) return false;
       if (state.carrocerias.size && !state.carrocerias.has(c.carroceria)) return false;
@@ -639,28 +641,42 @@
   }
 
   /* ---------- chips ---------- */
-  function pintarChips(contId, valores, set) {
-    document.getElementById(contId).innerHTML = valores.map(v =>
-      `<button type="button" class="chip" data-v="${esc(v)}" aria-pressed="${set.has(v)}">${esc(v)}</button>`
-    ).join('');
+  function pintarChips(contId, valores, set, vetadas) {
+    document.getElementById(contId).innerHTML = valores.map(v => {
+      const veto = vetadas && vetadas.has(v);
+      const on = set.has(v);
+      const titulo = veto ? 'Descartada: no aparece en la tabla'
+        : (vetadas ? 'Clic para filtrar · otro clic para descartarla' : '');
+      return `<button type="button" class="chip${veto ? ' chip-veto' : ''}" data-v="${esc(v)}"`
+        + ` aria-pressed="${on}"${titulo ? ` title="${titulo}"` : ''}>${esc(v)}</button>`;
+    }).join('');
   }
 
   function initChips() {
     const uniq = f => [...new Set(AUTOS.map(f))].sort((a, b) => a.localeCompare(b, 'es'));
+    /* El grupo de marcas es de tres estados: neutro -> filtrar -> descartar.
+       Un peso alto no alcanza para expresar "esta marca no la compro ni gratis";
+       el veto la saca de la tabla sin importar cuánto puntúe. */
     const grupos = [
-      ['chips-origen', uniq(c => c.paisMarca), state.origenes],
-      ['chips-marca', uniq(c => c.marca), state.marcas],
-      ['chips-tipo', uniq(c => c.tipo), state.tipos],
-      ['chips-carroceria', uniq(c => c.carroceria), state.carrocerias]
+      ['chips-origen', uniq(c => c.paisMarca), state.origenes, null],
+      ['chips-marca', uniq(c => c.marca), state.marcas, state.marcasVetadas],
+      ['chips-tipo', uniq(c => c.tipo), state.tipos, null],
+      ['chips-carroceria', uniq(c => c.carroceria), state.carrocerias, null]
     ];
-    grupos.forEach(([id, vals, set]) => {
-      pintarChips(id, vals, set);
+    grupos.forEach(([id, vals, set, vetadas]) => {
+      pintarChips(id, vals, set, vetadas);
       document.getElementById(id).addEventListener('click', e => {
         const b = e.target.closest('.chip');
         if (!b) return;
         const v = b.dataset.v;
-        set.has(v) ? set.delete(v) : set.add(v);
-        pintarChips(id, vals, set);
+        if (vetadas) {
+          if (vetadas.has(v)) vetadas.delete(v);          // descartada -> neutro
+          else if (set.has(v)) { set.delete(v); vetadas.add(v); }  // filtrada -> descartada
+          else set.add(v);                                 // neutro -> filtrada
+        } else {
+          set.has(v) ? set.delete(v) : set.add(v);
+        }
+        pintarChips(id, vals, set, vetadas);
         renderBody();
       });
     });
@@ -766,7 +782,8 @@
 
     document.getElementById('reset').addEventListener('click', () => {
       state.q = ''; document.getElementById('q').value = '';
-      state.origenes.clear(); state.marcas.clear(); state.tipos.clear(); state.carrocerias.clear();
+      state.origenes.clear(); state.marcas.clear(); state.marcasVetadas.clear();
+      state.tipos.clear(); state.carrocerias.clear();
       ['r-precio', 'r-largo'].forEach(id => { const i = document.getElementById(id); i.value = i.max; i.dispatchEvent(new Event('input')); });
       ['r-kml', 'r-maletero'].forEach(id => { const i = document.getElementById(id); i.value = i.min; i.dispatchEvent(new Event('input')); });
       initChips();

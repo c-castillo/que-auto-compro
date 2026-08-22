@@ -94,6 +94,14 @@ body {
   transition: background .12s, border-color .12s;
 }
 .chip:hover { border-color: var(--accent); }
+.chip-veto, .chip-veto:hover {
+  text-decoration: line-through;
+  color: var(--warn);
+  border-color: var(--warn);
+  border-style: dashed;
+  opacity: .85;
+}
+.pista { text-transform: none; letter-spacing: 0; font-weight: 400; opacity: .75; }
 .chip[aria-pressed="true"] {
   background: var(--accent);
   border-color: var(--accent);
