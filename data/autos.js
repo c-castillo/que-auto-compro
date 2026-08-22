@@ -63,8 +63,8 @@ window.AUTOS_DATA = {
         "MHEV": 0.95
       },
       "factorCiudadEV": 0.9,
-      "baseCostoDefault": "mixto",
-      "notaCosto": "Costo por 100 km: es el criterio de operación del score. Convierte consumo en plata, que es lo único comparable entre un híbrido y un eléctrico (km/l y kWh/100 km no se comparan entre sí). Puedes elegir la base de cálculo — ciclo mixto o ciclo ciudad — junto a los precios de bencina y kWh. Donde falta la cifra de un ciclo se deriva del otro: ×1,15 de mixto a ciudad en híbridos full (regeneran en cada frenada), ×0,95 en mild hybrid y enchufables. Los valores derivados van marcados \"der.\" en la tabla. Ojo: cuando la base es ciudad, el criterio favorece a las marcas que homologan más agresivo en Chile (Hyundai declara 40,1 km/l urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo). En ciclo mixto esa distorsión es bastante menor.",
+      "baseCostoDefault": "ciudad",
+      "notaCosto": "Costo por 100 km: es el criterio de operación del score. Convierte consumo en plata, que es lo único comparable entre un híbrido y un eléctrico (km/l y kWh/100 km no se comparan entre sí). La base por defecto es el ciclo ciudad; se puede cambiar a mixto junto a los precios de bencina y kWh. Donde falta la cifra de un ciclo se deriva del otro: ×1,15 de mixto a ciudad en híbridos full (regeneran en cada frenada), ×0,95 en mild hybrid y enchufables. Los valores derivados van marcados \"der.\" en la tabla. Ojo: cuando la base es ciudad, el criterio favorece a las marcas que homologan más agresivo en Chile (Hyundai declara 40,1 km/l urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo). En ciclo mixto esa distorsión es bastante menor.",
       "factorPhevSinCarga": 0.8,
       "equipamientoPuntos": {
         "entrada": 40,

@@ -74,7 +74,7 @@ cada auto aparece en su panel de detalle. Están ordenados por importancia:
 |---:|---|---|
 | **30** | **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
 | **30** | **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
-| **25** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
+| **25** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo ciudad (default) o mixto |
 | **15** | **Equipamiento** | Nivel de la versión dentro de su propia gama: entrada 40 · intermedia 70 · tope 100 · única 70 |
 | **20** | **Espacio interior** | Proxy: **altura de cabina** (60%) + distancia entre ejes (40%). La altura de cabina es el alto total menos el despeje al piso |
 | **5** | **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
@@ -96,10 +96,9 @@ la misma escala. Se calcula así:
 
 La **base de cálculo** se elige arriba, junto a los precios de bencina y kWh:
 
-- **Ciclo mixto** (default): menos distorsionado, porque varias marcas publican WLTP o pruebas
-  independientes.
-- **Ciclo ciudad**: más representativo si manejas casi solo en ciudad, pero premia a quien
-  homologa más agresivo en Chile (ver advertencia 1).
+- **Ciclo ciudad** (default): más representativo si manejas casi solo en ciudad, que es donde un
+  híbrido rinde de verdad. Contra: premia a quien homologa más agresivo en Chile (ver advertencia 2).
+- **Ciclo mixto**: menos distorsionado, porque varias marcas publican WLTP o pruebas independientes.
 
 Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
 
@@ -111,9 +110,9 @@ Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
 
 2. **En base ciudad, el costo premia a quien homologa más agresivo.** Hyundai declara 40,1 km/l
    urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo. Con base
-   ciudad el Kona sube al podio por una diferencia de homologación, no de mecánica; con base mixto
-   cae al puesto 10, porque ahí su cifra (22,7) viene de un test independiente. Por eso el default
-   es mixto. El caso extremo es el MG ZS: su costo mixto se deriva de unos 43,5 km/l urbanos
+   ciudad el Kona sube por una diferencia de homologación, no de mecánica; con base mixto cae
+   varios puestos, porque ahí su cifra (22,7) viene de un test independiente. El default es ciudad,
+   así que este sesgo está activo: si quieres neutralizarlo, cambia la base a mixto. El caso extremo es el MG ZS: su costo mixto se deriva de unos 43,5 km/l urbanos
    declarados, así que tómalo con pinzas (va marcado con `~`).
 
 3. **Espacio y tamaño se contradicen por definición.** Uno premia autos altos y con buena
