@@ -172,10 +172,6 @@
 
   const CRITERIOS = [
     {
-      key: 'espacio', label: 'Espacio interior', fn: subEspacio,
-      pista: c => `alto ${delta(c.dim.alto, S.referencia.alto)} · entre ejes ${delta(c.dim.ejes, S.referencia.ejes)} vs referencia`
-    },
-    {
       key: 'costo', label: 'Costo por 100 km', fn: subCosto,
       pista: c => {
         const v = costo100(c);
@@ -186,17 +182,25 @@
         return txt + ` · ${num(k.valor)} km/l ${k.derivado ? '(derivado)' : k.base}`;
       }
     },
+
     {
       key: 'precio', label: 'Precio', fn: subPrecio,
       pista: c => tieneDescuento(c)
         ? `${clp(precioEfectivo(c))} con financiamiento (lista ${clp(c.precioNuevo)})`
         : `${clp(precioEfectivo(c))}`
     },
+
+    { key: 'marca', label: 'Marca', fn: subMarca, pista: c => `nivel de marca: ${c.marca}` },
+
+    {
+      key: 'espacio', label: 'Espacio interior', fn: subEspacio,
+      pista: c => `alto ${delta(c.dim.alto, S.referencia.alto)} · entre ejes ${delta(c.dim.ejes, S.referencia.ejes)} vs referencia`
+    },
+
     {
       key: 'tamano', label: 'Tamaño / estacionar', fn: subTamano,
       pista: c => `largo ${delta(c.dim.largo, S.referencia.largo)} · ancho ${delta(c.dim.ancho, S.referencia.ancho)} vs referencia`
-    },
-    { key: 'marca', label: 'Marca', fn: subMarca, pista: c => `nivel de marca: ${c.marca}` }
+    }
   ];
 
   function desglose(c) {

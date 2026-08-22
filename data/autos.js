@@ -18,13 +18,13 @@ window.AUTOS_DATA = {
     "notaOrigen": "La columna \"Origen marca\" permite filtrar por procedencia. Ojo: el país de la marca no es el de fabricación — el Kia EV5 es coreano de marca pero se fabrica en China, y el Corolla Cross es japonés de marca pero viene de Brasil. La columna \"Origen\" del detalle indica dónde se fabrica.",
     "notaAlcance": "La tabla ya no es solo de SUV: incluye hatchback y sedán híbridos, que suelen ser más baratos y eficientes por el mismo tren motriz. Filtra por Carrocería si quieres volver a ver solo SUV.",
     "score": {
-      "descripcion": "Puntaje 0-100 compuesto por cuatro criterios. Los pesos son ajustables en la página; estos son los valores por defecto.",
+      "descripcion": "Puntaje 0-100 compuesto por cinco criterios. Los pesos por defecto siguen el orden de importancia declarado: rendimiento 30, precio 25, marca 20, espacio 15 y facilidad de estacionar 10. Son ajustables en la página con los sliders.",
       "pesos": {
-        "espacio": 20,
-        "costo": 20,
-        "precio": 20,
-        "tamano": 20,
-        "marca": 20
+        "costo": 30,
+        "precio": 25,
+        "marca": 20,
+        "espacio": 15,
+        "tamano": 10
       },
       "referencia": {
         "nombre": "SUV subcompacto de referencia",

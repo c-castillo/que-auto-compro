@@ -63,16 +63,16 @@ python3 -m http.server 8777   # → http://localhost:8777
 
 ## El score (0-100)
 
-Cinco criterios, ponderados. Los pesos se ajustan con sliders en la página (default 20 c/u)
-y el desglose de cada auto aparece en su panel de detalle.
+Cinco criterios, ponderados. Los pesos se ajustan con sliders en la página y el desglose de
+cada auto aparece en su panel de detalle. Están ordenados por importancia:
 
-| Criterio | Cómo se calcula |
-|---|---|
-| **Espacio interior** | Proxy: altura del vehículo (55%) + distancia entre ejes (45%), normalizados contra el rango de la tabla |
-| **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
-| **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
-| **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
-| **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
+| Peso | Criterio | Cómo se calcula |
+|---:|---|---|
+| **30** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
+| **25** | **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
+| **20** | **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
+| **15** | **Espacio interior** | Proxy: altura del vehículo (55%) + distancia entre ejes (45%), normalizados contra el rango de la tabla |
+| **10** | **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
 
 Todo es editable en `data/autos.js` → `meta.score`: los pesos por defecto, los niveles de marca
 y las medidas del auto de referencia (ponlas del auto que hoy te resulte cómodo de estacionar). Si un criterio no tiene dato (p. ej. el ancho del Suzuki Across), ese
@@ -108,9 +108,9 @@ Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
    declarados, así que tómalo con pinzas (va marcado con `~`).
 
 2. **Espacio y tamaño se contradicen por definición.** Uno premia autos altos y con buena
-   distancia entre ejes; el otro premia autos chicos. Con pesos iguales se cancelan en parte.
-   Si lo que más importa es ir cómodo, sube *Espacio* a 40 y baja *Tamaño* a 10 — el ranking
-   cambia bastante.
+   distancia entre ejes; el otro premia autos chicos, así que en parte se cancelan. Con los pesos
+   por defecto (15 y 10) pesan poco, y el ranking lo deciden costo, precio y marca. Si ir cómodo
+   pasa a importar, sube *Espacio* — el orden cambia bastante.
 3. **El criterio de espacio es un proxy, no un dato.** No hay altura libre al techo publicada
    para casi ningún modelo en Chile. Sirve para descartar, no para decidir — sobre todo si eres
    alto. Antes de comprar, siéntate en los finalistas con el asiento abajo y atrás del todo, y ojo
