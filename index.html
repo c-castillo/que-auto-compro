@@ -70,7 +70,6 @@
     </label>
 
     <div class="f-toggles">
-      <label class="switch"><input type="checkbox" id="t-preseleccion"> <span>Solo la preselección</span></label>
       <label class="switch"><input type="checkbox" id="t-dims" checked> <span>Ver dimensiones</span></label>
       <button type="button" id="reset" class="btn-reset">Limpiar filtros</button>
     </div>
@@ -85,6 +84,8 @@
   <div class="f-row f-supuestos">
     <span class="f-label">Supuestos para el costo por 100 km:</span>
     <label>bencina 93 <input type="number" id="s-bencina" step="10"> $/L</label>
+    <button type="button" id="btn-geo" class="btn-reset">Usar mi ubicación</button>
+    <span id="geo-estado" class="geo-estado"></span>
     <label>electricidad <input type="number" id="s-kwh" step="5"> $/kWh</label>
     <label>base de cálculo
       <select id="s-base">
@@ -110,12 +111,13 @@
   <p id="nota-rendimiento"></p>
   <ul>
     <li id="nota-score"></li>
+    <li id="nota-precio"></li>
     <li id="nota-costo"></li>
+    <li id="nota-bencina"></li>
     <li id="nota-espacio"></li>
     <li id="nota-marca"></li>
     <li id="nota-alcance"></li>
     <li id="nota-origen"></li>
-    <li><strong>Precio nuevo</strong> es precio de lista publicado. Donde la marca solo publica el precio con financiamiento (Hyundai con Amicar) uso el precio de lista y lo digo en la nota del modelo.</li>
     <li><strong>Precio usado</strong> marcado con <span class="est">~</span> es una estimación, no un precio observado. Sin marca, es un precio real visto en chileautos.</li>
     <li><strong>Historial de precios</strong> arranca prácticamente hoy: solo el Corolla Cross tiene un punto anterior verificable (lista 2025 vs 2026). Cada vez que corras <code>scripts/add-snapshot.mjs</code> la serie crece.</li>
   </ul>

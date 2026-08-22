@@ -19,7 +19,6 @@
     kmlMin: 0,
     largoMax: null,
     maleteroMin: 0,
-    soloPreseleccion: false,
     verDims: true,
     pesos: { ...S.pesos },
     sortKey: 'score',
@@ -34,6 +33,38 @@
   const clp = n => n == null ? null : '$' + n.toLocaleString('es-CL');
   const num = (n, d = 1) => n == null ? null : n.toLocaleString('es-CL', { minimumFractionDigits: d, maximumFractionDigits: d });
   const nd = '<span class="nd">—</span>';
+  // Precio abreviado en millones: la tabla tiene que caber en un celular.
+  const clpM = n => n == null ? null : '$' + (n / 1e6).toLocaleString('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'M';
+
+  /* Carrocería como glifo + tooltip: el nombre completo ocupaba media pantalla.
+     La silueta distingue sedán / hatchback / SUV y la letra indica el tamaño. */
+  const CARROCERIAS = {
+    'Hatchback':                { forma: 'hatch', tam: '',   nombre: 'Hatchback' },
+    'Sedán':                    { forma: 'sedan', tam: '',   nombre: 'Sedán' },
+    'SUV subcompacto':          { forma: 'suv',   tam: 'XS', nombre: 'SUV subcompacto' },
+    'SUV subcompacto premium':  { forma: 'suv',   tam: 'XS', nombre: 'SUV subcompacto premium', premium: true },
+    'SUV compacto':             { forma: 'suv',   tam: 'C',  nombre: 'SUV compacto' },
+    'SUV compacto premium':     { forma: 'suv',   tam: 'C',  nombre: 'SUV compacto premium', premium: true },
+    'SUV mediano':              { forma: 'suv',   tam: 'M',  nombre: 'SUV mediano' },
+    'SUV grande':               { forma: 'suv',   tam: 'G',  nombre: 'SUV grande' }
+  };
+  const SILUETAS = {
+    sedan: 'M2 9.3h16V7.9c0-.6-.4-1-1-1.1l-2.5-.4-1.9-1.9c-.3-.3-.7-.5-1.2-.5H7.9c-.5 0-.9.2-1.2.5L5 6.4l-2 .4c-.6.1-1 .5-1 1.1v1.4z',
+    hatch: 'M3 9.3h14V7.7c0-.6-.4-1.1-1-1.2l-1.3-.2-2.6-2.4c-.3-.2-.6-.4-1-.4H8c-.5 0-.9.2-1.2.5L4.9 6.3l-1 .2c-.6.1-.9.6-.9 1.2v1.6z',
+    suv:   'M2.5 9.3h15V7.2c0-.6-.4-1.1-1-1.2l-1.4-.2-1.8-2.2c-.3-.3-.7-.5-1.2-.5H7.9c-.5 0-.9.2-1.2.5L4.9 5.8l-1.4.2c-.6.1-1 .6-1 1.2v2.1z'
+  };
+  function iconoCarroceria(nombre) {
+    const c = CARROCERIAS[nombre];
+    if (!c) return esc(nombre);
+    return `<span class="carr" title="${esc(c.nombre)}" aria-label="${esc(c.nombre)}">`
+      + `<svg viewBox="0 0 20 12" width="22" height="13" aria-hidden="true">`
+      + `<path d="${SILUETAS[c.forma]}" fill="currentColor"/>`
+      + `<circle cx="6.2" cy="9.4" r="1.5" fill="currentColor"/><circle cx="13.8" cy="9.4" r="1.5" fill="currentColor"/>`
+      + `</svg>`
+      + (c.tam ? `<b>${c.tam}</b>` : '')
+      + (c.premium ? '<i class="prem" aria-hidden="true">+</i>' : '')
+      + '</span>';
+  }
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   /* Costo de energía por 100 km — el criterio de operación del score y también una
@@ -67,6 +98,11 @@
     return k ? 100 / k.valor * state.bencina : null;
   }
 
+  /* El precio que se muestra y con el que se puntúa es el más barato publicado por la
+     marca (normalmente exige financiamiento propio o bonos). El de lista queda en el tooltip. */
+  const precioEfectivo = c => c.precioFinanciado ?? c.precioNuevo;
+  const tieneDescuento = c => c.precioFinanciado != null && c.precioFinanciado < c.precioNuevo;
+
   // Caída porcentual del precio nuevo al usado de referencia.
   function deltaUsado(car) {
     if (car.precioUsado == null || !car.precioNuevo) return null;
@@ -84,7 +120,7 @@
     const vs = AUTOS.map(f).filter(v => v != null);
     return [Math.min(...vs), Math.max(...vs)];
   };
-  const R = { alto: rango(c => c.dim.alto), ejes: rango(c => c.dim.ejes), precio: rango(c => c.precioFull) };
+  const R = { alto: rango(c => c.dim.alto), ejes: rango(c => c.dim.ejes), precio: rango(c => precioEfectivo(c)) };
   const norm = (v, [min, max]) => max === min ? 50 : (v - min) / (max - min) * 100;
 
   // El rango depende de los precios de bencina/kWh y de la base elegida, todos
@@ -116,7 +152,7 @@
   }
 
   // Precio de la versión full equipo: el más barato puntúa 100.
-  const subPrecio = c => c.precioFull == null ? null : 100 - norm(c.precioFull, R.precio);
+  const subPrecio = c => 100 - norm(precioEfectivo(c), R.precio);
 
   // Tamaño: cuánto se pasa de la huella del auto de referencia.
   // Igual o más chico = 100. El factor 3 hace que un 10% más grande en largo y ancho
@@ -151,8 +187,10 @@
       }
     },
     {
-      key: 'precio', label: 'Precio full equipo', fn: subPrecio,
-      pista: c => c.precioFull == null ? '' : (c.precioFullEstimado ? 'precio tope estimado' : 'precio tope publicado')
+      key: 'precio', label: 'Precio', fn: subPrecio,
+      pista: c => tieneDescuento(c)
+        ? `${clp(precioEfectivo(c))} con financiamiento (lista ${clp(c.precioNuevo)})`
+        : `${clp(precioEfectivo(c))}`
     },
     {
       key: 'tamano', label: 'Tamaño / estacionar', fn: subTamano,
@@ -177,106 +215,113 @@
 
   const scoreIncompleto = c => desglose(c).some(d => d.peso && d.valor == null);
 
-  /* ---------- columnas ---------- */
+  /* ---------- columnas ----------
+     `prioridad` controla el responsive: 1 se ve siempre, 2 se oculta bajo 900px y
+     3 bajo 640px, para que en el celular quede lo esencial sin scroll horizontal. */
   const COLS = [
     {
-      key: 'score', label: 'Score', unidad: '0-100', group: 'base',
+      key: 'score', label: 'Score', group: 'base', prioridad: 1,
       val: c => score(c),
       html: c => {
         const v = score(c);
         if (v == null) return nd;
-        // ancho en px: el contenedor es flex, así que un % no daría una escala comparable
-        return `<div class="score-cell"><span>${Math.round(v)}</span>`
-          + `<i style="width:${Math.max(1, Math.round(v * 0.42))}px"></i>`
-          + (scoreIncompleto(c) ? '<em class="warn-mark" title="Falta algún dato: ese criterio se contó como 50 neutro">*</em>' : '')
-          + '</div>';
+        return `<span class="score-cell${scoreIncompleto(c) ? ' inc' : ''}" style="--w:${Math.round(v)}%"`
+          + ` title="${Math.round(v)} de 100${scoreIncompleto(c) ? ' · falta algún dato, ese criterio contó 50' : ''}">`
+          + `${Math.round(v)}</span>`;
       }
     },
     {
-      key: 'modelo', label: 'Modelo', group: 'base', tipo: 'texto',
+      key: 'modelo', label: 'Modelo', group: 'base', tipo: 'texto', prioridad: 1,
       val: c => `${c.marca} ${c.modelo}`,
       html: c => `<span class="m-nombre">${esc(c.marca)} ${esc(c.modelo)}</span>`
-        + (c.preseleccionado ? ' <span class="tag tag-hist">preselección</span>' : '')
         + `<span class="m-version">${esc(c.version)}</span>`
     },
-    { key: 'marca', label: 'Marca', group: 'base', tipo: 'texto', val: c => c.marca, html: c => esc(c.marca) },
+    { key: 'marca', label: 'Marca', group: 'base', tipo: 'texto', prioridad: 3, val: c => c.marca, html: c => esc(c.marca) },
     {
-      key: 'paisMarca', label: 'Origen', unidad: 'marca', group: 'base', tipo: 'texto',
+      key: 'paisMarca', label: 'Origen', group: 'base', tipo: 'texto', prioridad: 3,
       val: c => c.paisMarca, html: c => esc(c.paisMarca)
     },
-    { key: 'tipo', label: 'Tipo', group: 'base', tipo: 'texto', val: c => c.tipo, html: c => `<span class="tag">${esc(c.tipo)}</span>` },
-    { key: 'carroceria', label: 'Carrocería', group: 'base', tipo: 'texto', val: c => c.carroceria, html: c => esc(c.carroceria) },
+    { key: 'tipo', label: 'Tipo', group: 'base', tipo: 'texto', prioridad: 1, html: c => `<span class="tag">${esc(c.tipo)}</span>`, val: c => c.tipo },
     {
-      key: 'precioNuevo', label: 'Precio nuevo', unidad: 'CLP', group: 'base',
-      val: c => c.precioNuevo, html: c => clp(c.precioNuevo) ?? nd
+      key: 'carroceria', label: 'Carr.', group: 'base', tipo: 'texto', prioridad: 2,
+      val: c => c.carroceria, html: c => iconoCarroceria(c.carroceria)
     },
     {
-      key: 'precioFull', label: 'Precio full', unidad: 'CLP tope gama', group: 'base',
-      val: c => c.precioFull,
-      html: c => c.precioFull == null ? nd
-        : (c.precioFullEstimado ? '<span class="est">~</span>' : '') + clp(c.precioFull)
+      key: 'precioNuevo', label: 'Precio', unidad: 'nuevo', group: 'base', prioridad: 1,
+      val: c => precioEfectivo(c),
+      html: c => {
+        const tip = tieneDescuento(c)
+          ? `${clp(precioEfectivo(c))} con financiamiento · lista ${clp(c.precioNuevo)}`
+          : `${clp(precioEfectivo(c))} · sin otro precio publicado`;
+        return `<span title="${tip}">${clpM(precioEfectivo(c))}`
+          + (tieneDescuento(c) ? '<i class="fin" aria-hidden="true">f</i>' : '') + '</span>';
+      }
     },
     {
-      key: 'precioUsado', label: 'Precio usado', unidad: 'CLP ref.', group: 'base',
+      key: 'precioUsado', label: 'Usado', unidad: 'ref.', group: 'base', prioridad: 2,
       val: c => c.precioUsado,
       html: c => c.precioUsado == null ? nd
-        : (c.precioUsadoEstimado ? `<span class="est">~</span>` : '') + clp(c.precioUsado)
+        : `<span title="${clp(c.precioUsado)}${c.precioUsadoEstimado ? ' (estimado)' : ''}">`
+          + (c.precioUsadoEstimado ? '<span class="est">~</span>' : '') + clpM(c.precioUsado) + '</span>'
     },
     {
-      key: 'delta', label: 'Δ usado', unidad: '%', group: 'base',
+      key: 'delta', label: 'Δ', unidad: '%', group: 'base', prioridad: 3,
       val: c => deltaUsado(c),
       html: c => { const d = deltaUsado(c); return d == null ? nd : num(d, 0) + '%'; }
     },
     {
-      key: 'kmlCiudad', label: 'km/l ciudad', unidad: 'homolog. o der.', group: 'base',
+      key: 'kmlCiudad', label: 'km/l', unidad: 'ciudad', group: 'base', prioridad: 3,
       val: c => { const k = c.tipo === 'EV' ? null : kmlPara(c, 'ciudad'); return k ? k.valor : null; },
       html: c => {
         const k = c.tipo === 'EV' ? null : kmlPara(c, 'ciudad');
         if (!k) return nd;
-        if (k.derivado) return `<span class="est">${num(k.valor)}</span> <span class="tag" title="${esc(k.base)}">der.</span>`;
-        return num(k.valor) + (k.valor > 30 ? ' <span class="warn-mark" title="Homologación chilena, muy optimista frente a WLTP">*</span>' : '');
+        if (k.derivado) return `<span class="est" title="${esc(k.base)}">${num(k.valor)}</span>`;
+        return `<span title="${esc(k.base)}">${num(k.valor)}</span>`
+          + (k.valor > 30 ? '<span class="warn-mark" title="Homologación chilena, muy optimista frente a WLTP">*</span>' : '');
       }
     },
     {
-      key: 'kmlMixto', label: 'km/l mixto', unidad: 'ciclo', group: 'base',
+      key: 'kmlMixto', label: 'km/l', unidad: 'mixto', group: 'base', prioridad: 2,
       val: c => c.rend.mixto,
       html: c => c.rend.mixto == null ? nd
-        : num(c.rend.mixto) + ` <span class="tag">${esc(c.rend.ciclo || '?')}</span>`
+        : `<span title="ciclo ${esc(c.rend.ciclo || '?')}">${num(c.rend.mixto)}</span>`
     },
     {
-      key: 'costo100', label: 'Costo', unidad: () => `$/100 km · ${state.baseCosto}`, group: 'base',
+      key: 'costo100', label: 'Costo', unidad: () => `$/100km`, group: 'base', prioridad: 1,
       val: c => costo100(c),
       html: c => {
         const v = costo100(c);
         if (v == null) return nd;
         const k = c.tipo === 'EV' ? null : kmlPara(c, state.baseCosto);
-        return (k && k.derivado ? '<span class="est">~</span>' : '') + '$' + Math.round(v).toLocaleString('es-CL');
+        return `<span title="ciclo ${state.baseCosto}">`
+          + (k && k.derivado ? '<span class="est">~</span>' : '')
+          + '$' + Math.round(v).toLocaleString('es-CL') + '</span>';
       }
     },
     {
-      key: 'autonomia', label: 'Autonomía', unidad: 'km eléctricos', group: 'base',
+      key: 'autonomia', label: 'Auton.', unidad: 'km', group: 'base', prioridad: 3,
       val: c => c.ev ? c.ev.autonomiaKm : null,
       html: c => c.ev ? num(c.ev.autonomiaKm, 0) : nd
     },
     {
-      key: 'maletero', label: 'Maletero', unidad: 'L', group: 'base', val: c => c.dim.maletero,
+      key: 'maletero', label: 'Malet.', unidad: 'L', group: 'base', prioridad: 2, val: c => c.dim.maletero,
       html: c => c.dim.maletero == null ? nd : num(c.dim.maletero, 0)
     },
-    { key: 'potencia', label: 'Potencia', unidad: 'HP', group: 'base', val: c => c.potencia, html: c => num(c.potencia, 0) },
+    { key: 'potencia', label: 'HP', group: 'base', prioridad: 3, val: c => c.potencia, html: c => num(c.potencia, 0) },
     {
-      key: 'largo', label: 'Largo', unidad: 'mm', group: 'dim', val: c => c.dim.largo,
+      key: 'largo', label: 'Largo', unidad: 'mm', group: 'dim', prioridad: 2, val: c => c.dim.largo,
       html: c => c.dim.largo == null ? nd
-        : num(c.dim.largo, 0) + (c.dimsPorConfirmar ? ' <span class="warn-mark" title="Dimensiones por confirmar en ficha local">?</span>' : '')
+        : num(c.dim.largo, 0) + (c.dimsPorConfirmar ? '<span class="warn-mark" title="Dimensiones por confirmar en ficha local">?</span>' : '')
     },
-    { key: 'ancho', label: 'Ancho', unidad: 'mm', group: 'dim', val: c => c.dim.ancho, html: c => num(c.dim.ancho, 0) },
-    { key: 'alto', label: 'Alto', unidad: 'mm', group: 'dim', val: c => c.dim.alto, html: c => num(c.dim.alto, 0) },
-    { key: 'ejes', label: 'Entre ejes', unidad: 'mm', group: 'dim', val: c => c.dim.ejes, html: c => num(c.dim.ejes, 0) },
+    { key: 'ancho', label: 'Ancho', unidad: 'mm', group: 'dim', prioridad: 2, val: c => c.dim.ancho, html: c => num(c.dim.ancho, 0) },
+    { key: 'alto', label: 'Alto', unidad: 'mm', group: 'dim', prioridad: 3, val: c => c.dim.alto, html: c => num(c.dim.alto, 0) },
+    { key: 'ejes', label: 'Ejes', unidad: 'mm', group: 'dim', prioridad: 3, val: c => c.dim.ejes, html: c => num(c.dim.ejes, 0) },
     {
-      key: 'despeje', label: 'Despeje', unidad: 'mm', group: 'dim', val: c => c.dim.despeje,
+      key: 'despeje', label: 'Desp.', unidad: 'mm', group: 'dim', prioridad: 3, val: c => c.dim.despeje,
       html: c => c.dim.despeje == null ? nd : num(c.dim.despeje, 0)
     },
     {
-      key: 'historial', label: 'Historial', unidad: 'precio lista', group: 'base', tipo: 'nosort',
+      key: 'historial', label: 'Hist.', group: 'base', tipo: 'nosort', prioridad: 3,
       val: c => serie(c, 'nuevo').length,
       html: c => sparkline(c)
     }
@@ -307,12 +352,11 @@
   function filtrar() {
     const q = state.q.trim().toLowerCase();
     return AUTOS.filter(c => {
-      if (state.soloPreseleccion && !c.preseleccionado) return false;
       if (state.origenes.size && !state.origenes.has(c.paisMarca)) return false;
       if (state.marcas.size && !state.marcas.has(c.marca)) return false;
       if (state.tipos.size && !state.tipos.has(c.tipo)) return false;
       if (state.carrocerias.size && !state.carrocerias.has(c.carroceria)) return false;
-      if (state.precioMax != null && c.precioNuevo > state.precioMax) return false;
+      if (state.precioMax != null && precioEfectivo(c) > state.precioMax) return false;
       if (state.largoMax != null && c.dim.largo > state.largoMax) return false;
       if (state.maleteroMin > 0 && (c.dim.maletero ?? 0) < state.maleteroMin) return false;
       if (state.kmlMin > 0 && (c.rend.mixto ?? -1) < state.kmlMin) return false;
@@ -344,7 +388,7 @@
       const dir = activa ? `<span class="dir">${state.sortDir === 1 ? '▲' : '▼'}</span>` : '';
       const sortable = c.tipo !== 'nosort';
       const unidad = typeof c.unidad === 'function' ? c.unidad() : c.unidad;
-      return `<th data-key="${c.key}" ${sortable ? '' : 'data-nosort="1" style="cursor:default"'}
+      return `<th data-key="${c.key}" class="p${c.prioridad || 1}" ${sortable ? '' : 'data-nosort="1" style="cursor:default"'}
         ${activa ? `aria-sort="${state.sortDir === 1 ? 'ascending' : 'descending'}"` : ''}
         title="${sortable ? 'Ordenar por ' + esc(c.label) : ''}">${esc(c.label)}${dir}${unidad ? `<span class="u">${esc(unidad)}</span>` : ''}</th>`;
     }).join('');
@@ -355,7 +399,7 @@
     const cols = colsVisibles();
     document.getElementById('tbody').innerHTML = lista.map(c =>
       `<tr data-id="${c.id}" class="${state.seleccion === c.id ? 'sel' : ''}">`
-      + cols.map(col => `<td>${col.html(c) ?? nd}</td>`).join('')
+      + cols.map(col => `<td class="p${col.prioridad || 1}">${col.html(c) ?? nd}</td>`).join('')
       + '</tr>'
     ).join('');
     document.getElementById('vacio').hidden = lista.length > 0;
@@ -419,8 +463,8 @@
       : [d.largo, d.ancho, d.alto].map(v => v == null ? '?' : v).join(' × ') + ' mm';
 
     const specs = [
-      ['Precio nuevo', clp(c.precioNuevo)],
-      ['Precio full equipo', c.precioFull == null ? '—' : (c.precioFullEstimado ? '~' : '') + clp(c.precioFull)],
+      ['Precio nuevo', clp(precioEfectivo(c)) + (tieneDescuento(c) ? ' (con financiamiento)' : '')],
+      ['Precio de lista', tieneDescuento(c) ? clp(c.precioNuevo) : '—'],
       ['Precio usado ref.', c.precioUsado == null ? '—' : (c.precioUsadoEstimado ? '~' : '') + clp(c.precioUsado)],
       ['Largo × ancho × alto', dimsTexto],
       ['Distancia entre ejes', mm(d.ejes)],
@@ -445,7 +489,7 @@
     el.innerHTML = `
       <button class="d-cerrar" type="button" id="d-cerrar">Cerrar</button>
       <h2>${esc(c.marca)} ${esc(c.modelo)} <span style="font-weight:400;color:var(--text-dim)">${esc(c.version)}</span></h2>
-      <p class="d-sub">${esc(c.tipo)} · ${esc(c.carroceria)} · ${c.anio}${c.preseleccionado ? ' · en la preselección' : ''}</p>
+      <p class="d-sub">${esc(c.tipo)} · ${esc(c.carroceria)} · ${c.anio}</p>
       <div class="d-grid">
         <div>
           ${c.notas ? `<p class="d-nota">${esc(c.notas)}</p>` : ''}
@@ -467,10 +511,6 @@
                 <span class="dg-peso">×${d.peso}</span>
               </li>`).join('')}
           </ul>
-          <p class="d-nota" style="color:var(--text-dim);font-size:.78rem">
-            ${esc(c.precioFullNota || '')}
-          </p>
-
           <h3 class="d-h3">Historial de precios</h3>
           ${chartPrecios(c)}
         </div>
@@ -487,6 +527,75 @@
     }
     renderBody();
     renderDetalle();
+  }
+
+  /* ---------- precio de bencina por ubicación ----------
+     Pide la posición al navegador, resuelve la comuna con Nominatim y trae los precios
+     reales de 93 octanos de esa comuna desde bencinaenlinea.cl (CNE). Todo ocurre en el
+     navegador: no hay servidor propio y la ubicación no se guarda ni se envía a otra parte.
+     Si algo falla se queda el default (Shell Carlos Antúnez 2490, Providencia). */
+  const B = DATA.meta.bencina;
+
+  const normalizar = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+  function estadoGeo(txt, error = false) {
+    const el = document.getElementById('geo-estado');
+    el.textContent = txt;
+    el.classList.toggle('error', error);
+  }
+
+  const posicion = () => new Promise((ok, no) => {
+    if (!navigator.geolocation) return no(new Error('Tu navegador no expone geolocalización'));
+    navigator.geolocation.getCurrentPosition(
+      p => ok(p.coords),
+      e => no(new Error(e.code === 1 ? 'Permiso de ubicación denegado' : 'No se pudo obtener la ubicación')),
+      { timeout: 15000, maximumAge: 600000 }
+    );
+  });
+
+  async function comunaDe(lat, lon) {
+    const u = `${B.geocoder}?format=jsonv2&zoom=10&lat=${lat}&lon=${lon}`;
+    const r = await fetch(u, { headers: { Accept: 'application/json' } });
+    if (!r.ok) throw new Error('No se pudo resolver la comuna');
+    const a = (await r.json()).address || {};
+    return a.city_district || a.town || a.municipality || a.city || a.county;
+  }
+
+  async function preciosDeComuna(comuna) {
+    const r = await fetch(B.api);
+    if (!r.ok) throw new Error('bencinaenlinea.cl no respondió');
+    const todos = (await r.json()).data || [];
+    const objetivo = normalizar(comuna);
+    return todos.filter(e => normalizar(e.comuna_nombre) === objetivo && !e.en_mantencion)
+                .map(e => ({ precio: Math.round(parseFloat(e.combustible_precio)), marca: e.marca_nombre, dir: e.estacion_direccion }))
+                .filter(e => Number.isFinite(e.precio))
+                .sort((a, b) => a.precio - b.precio);
+  }
+
+  async function actualizarBencina() {
+    const btn = document.getElementById('btn-geo');
+    btn.disabled = true;
+    try {
+      estadoGeo('pidiendo ubicación…');
+      const { latitude, longitude } = await posicion();
+      estadoGeo('buscando tu comuna…');
+      const comuna = await comunaDe(latitude, longitude);
+      if (!comuna) throw new Error('No pude identificar la comuna');
+      estadoGeo(`consultando precios en ${comuna}…`);
+      const est = await preciosDeComuna(comuna);
+      if (!est.length) throw new Error(`Sin estaciones con 93 en ${comuna}`);
+      // la mediana representa mejor lo que pagas que la más barata de la comuna
+      const mediana = est[Math.floor(est.length / 2)].precio;
+      state.bencina = mediana;
+      const inp = document.getElementById('s-bencina');
+      inp.value = mediana;
+      estadoGeo(`${comuna}: mediana $${mediana}/L · ${est.length} estaciones, de $${est[0].precio} a $${est[est.length - 1].precio}`);
+      renderHead(); renderBody(); renderDetalle();
+    } catch (e) {
+      estadoGeo(`${e.message}. Queda el default: $${B.precioDefault}/L (${B.estacionDefault}).`, true);
+    } finally {
+      btn.disabled = false;
+    }
   }
 
   /* ---------- pesos del score ---------- */
@@ -545,7 +654,7 @@
 
   /* ---------- rangos ---------- */
   function initRangos() {
-    const precios = AUTOS.map(c => c.precioNuevo);
+    const precios = AUTOS.map(precioEfectivo);
     const largos = AUTOS.map(c => c.dim.largo);
     const maleteros = AUTOS.map(c => c.dim.maletero || 0);
 
@@ -605,9 +714,6 @@
     // #id en la URL abre ese modelo directo — sirve para compartir un link a un auto.
     window.addEventListener('hashchange', () => seleccionar(location.hash.slice(1) || null, true));
 
-    document.getElementById('t-preseleccion').addEventListener('change', e => {
-      state.soloPreseleccion = e.target.checked; renderBody();
-    });
     document.getElementById('t-dims').addEventListener('change', e => {
       state.verDims = e.target.checked; renderHead(); renderBody();
     });
@@ -616,6 +722,8 @@
     sb.value = state.bencina; sk.value = state.kwh;
     sb.addEventListener('input', () => { state.bencina = +sb.value || 0; renderBody(); renderDetalle(); });
     sk.addEventListener('input', () => { state.kwh = +sk.value || 0; renderBody(); renderDetalle(); });
+
+    document.getElementById('btn-geo').addEventListener('click', actualizarBencina);
 
     const sbase = document.getElementById('s-base');
     sbase.value = state.baseCosto;
@@ -627,7 +735,6 @@
     document.getElementById('reset').addEventListener('click', () => {
       state.q = ''; document.getElementById('q').value = '';
       state.origenes.clear(); state.marcas.clear(); state.tipos.clear(); state.carrocerias.clear();
-      state.soloPreseleccion = false; document.getElementById('t-preseleccion').checked = false;
       ['r-precio', 'r-largo'].forEach(id => { const i = document.getElementById(id); i.value = i.max; i.dispatchEvent(new Event('input')); });
       ['r-kml', 'r-maletero'].forEach(id => { const i = document.getElementById(id); i.value = i.min; i.dispatchEvent(new Event('input')); });
       initChips();
@@ -643,6 +750,9 @@
   document.getElementById('nota-score').textContent =
     `Score: ${S.descripcion} La referencia de tamaño es un ${S.referencia.nombre} (${S.referencia.largo} × ${S.referencia.ancho} mm). ${S.referencia.nota}`;
   document.getElementById('nota-costo').textContent = S.notaCosto;
+  document.getElementById('nota-bencina').textContent = B.nota;
+  document.getElementById('nota-precio').textContent = DATA.meta.notaPrecio;
+  estadoGeo(`por defecto: ${B.estacionDefault}`);
   document.getElementById('nota-espacio').textContent = S.notaEspacio;
   document.getElementById('nota-marca').textContent = S.notaMarca;
   initChips();

@@ -4,8 +4,8 @@ Tabla comparativa de SUV híbridos y eléctricos disponibles en Chile, filtrable
 por marca, dimensiones, rendimiento y precio (con historial).
 
 Datos recopilados en agosto de 2026 desde sitios oficiales de marca en Chile, chileautos.cl y
-prensa especializada. Cada modelo lleva sus fuentes enlazadas en el panel de detalle. Un subconjunto
-va marcado con la etiqueta **preselección**, para poder filtrar una lista corta de candidatos.
+prensa especializada. Cada modelo lleva sus fuentes enlazadas en el panel de detalle. El precio de
+la bencina se puede traer en vivo desde bencinaenlinea.cl según tu ubicación.
 
 **33 modelos**, con prioridad en marcas japonesas y coreanas:
 
@@ -51,12 +51,15 @@ python3 -m http.server 8777   # → http://localhost:8777
 
 - **Ordenar**: click en cualquier encabezado. Segundo click invierte. Los "—" quedan siempre al final.
 - **Filtrar**: chips de origen de marca/marca/tipo/carrocería (se acumulan), sliders de precio,
-  km/l, largo y maletero, y el toggle *Solo la preselección*. Para ver solo japoneses y coreanos,
-  marca esos dos chips en *Origen marca*.
+  km/l, largo y maletero. Para ver solo japoneses y coreanos, marca esos dos chips en *Origen marca*.
 - **Detalle**: click en una fila abre specs completas, notas, fuentes y el gráfico de precios.
   La URL queda con `#id-del-modelo`, así que puedes compartir el link a un auto puntual.
 - **Costo $/100 km**: columna calculada con la base elegida (mixto o ciudad). Los precios de
-  bencina y kWh son editables arriba — el default es $1.350/L y $160/kWh.
+  bencina y kWh son editables arriba.
+- **Responsive**: bajo 900px se ocultan las columnas secundarias y bajo 640px queda lo esencial
+  (score, modelo, tipo, precio y costo). Cada columna declara su `prioridad` en `COLS`.
+- **Carrocería** se muestra como silueta — sedán, hatchback o SUV — con la letra del tamaño
+  (XS/C/M/G) y `+` si es premium. El nombre completo está en el tooltip.
 
 ## El score (0-100)
 
@@ -67,7 +70,7 @@ y el desglose de cada auto aparece en su panel de detalle.
 |---|---|
 | **Espacio interior** | Proxy: altura del vehículo (55%) + distancia entre ejes (45%), normalizados contra el rango de la tabla |
 | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
-| **Precio full equipo** | Precio de la **versión tope de gama**, no la de entrada. El más barato puntúa 100 |
+| **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
 | **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
 | **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
 
@@ -113,6 +116,20 @@ Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
    alto. Antes de comprar, siéntate en los finalistas con el asiento abajo y atrás del todo, y ojo
    con el techo panorámico: descuenta ~3 cm.
 
+## Precio de la bencina
+
+Por defecto la tabla usa **$1.433/L** de 93 octanos, que es el precio de la Shell de
+Carlos Antúnez 2490 en Providencia.
+
+El botón **Usar mi ubicación** pide permiso de geolocalización, resuelve tu comuna con
+Nominatim (OpenStreetMap) y trae los precios reales de 93 de esa comuna desde
+[bencinaenlinea.cl](https://www.bencinaenlinea.cl) (API pública de la CNE). Usa la **mediana**
+de las estaciones de la comuna, no la más barata, y muestra el rango.
+
+Todo ocurre en el navegador: no hay servidor propio, la ubicación no se guarda ni se envía a
+ningún otro lado, y si cualquier paso falla se conserva el precio por defecto. El campo sigue
+siendo editable a mano.
+
 ## Agregar precios al historial
 
 El historial es lo único que no se puede reconstruir hacia atrás: hay que ir tomando muestras.
@@ -139,8 +156,10 @@ Correrlo una vez al mes es suficiente para que en medio año tengas curvas reale
    compara solo dentro de la misma etiqueta.
 2. **Precio usado**: los que llevan `~` son estimaciones, no precios observados. Los que no lo llevan
    salieron de publicaciones reales de chileautos.
-3. **Hyundai publica precios con financiamiento Amicar** ($23.990.000 para el Kona HEV Plus).
-   En la tabla uso el precio de lista ($27.590.000) para que sea comparable con el resto.
+3. **La columna Precio muestra el más barato publicado**, que normalmente exige financiamiento
+   de la marca o bonos; va con una `f` volada. El precio de lista está en el tooltip cuando la
+   marca publica ambos. Caso típico: el Kona HEV Plus aparece a $23.990.000 con Amicar, y su
+   lista de $27.590.000 sale al pasar el mouse. Hyundai no publica lista para el Tucson.
 4. **Dimensiones marcadas con `?`** (Chery Tiggo 4, BYD Song Pro, Kia Sorento, Kia EV5,
    Hyundai Kona Eléctrico, MG3, Suzuki Across) vienen de fichas regionales, no de la ficha chilena.
    Confírmalas antes de decidir por espacio. Del **Suzuki Across** solo hay largo, maletero máximo

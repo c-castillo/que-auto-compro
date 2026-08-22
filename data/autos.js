@@ -11,7 +11,7 @@ window.AUTOS_DATA = {
     "moneda": "CLP",
     "notaRendimiento": "Ojo: las cifras de ciudad homologadas en Chile (ciclo local) son mucho más optimistas que las WLTP. El 40,1 km/l del Kona y el 43,5 km/l del MG NO son comparables con el 25,6 km/l que declara Toyota. La columna 'mixto' indica su ciclo de origen.",
     "supuestos": {
-      "precioBencina93": 1350,
+      "precioBencina93": 1433,
       "precioKwh": 160,
       "depreciacionAnual": 0.12
     },
@@ -61,7 +61,17 @@ window.AUTOS_DATA = {
       "factorCiudadEV": 0.9,
       "baseCostoDefault": "mixto",
       "notaCosto": "Costo por 100 km: es el criterio de operación del score. Convierte consumo en plata, que es lo único comparable entre un híbrido y un eléctrico (km/l y kWh/100 km no se comparan entre sí). Puedes elegir la base de cálculo — ciclo mixto o ciclo ciudad — junto a los precios de bencina y kWh. Donde falta la cifra de un ciclo se deriva del otro: ×1,15 de mixto a ciudad en híbridos full (regeneran en cada frenada), ×0,95 en mild hybrid y enchufables. Los valores derivados van marcados \"der.\" en la tabla. Ojo: cuando la base es ciudad, el criterio favorece a las marcas que homologan más agresivo en Chile (Hyundai declara 40,1 km/l urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo). En ciclo mixto esa distorsión es bastante menor."
-    }
+    },
+    "bencina": {
+      "precioDefault": 1433,
+      "estacionDefault": "Shell · Carlos Antúnez 2490, Providencia",
+      "fechaDefault": "2026-08-22",
+      "combustibleId": 1,
+      "api": "https://api.bencinaenlinea.cl/api/estaciones/precios_combustibles/1/reporte_comunal",
+      "geocoder": "https://nominatim.openstreetmap.org/reverse",
+      "nota": "El precio por defecto es el de la Shell de Carlos Antúnez 2490 en Providencia para 93 octanos. Con el botón \"usar mi ubicación\" la página pide tu posición, resuelve la comuna y trae los precios reales de 93 de esa comuna desde bencinaenlinea.cl (CNE), usando la mediana de las estaciones. Nada de eso sale del navegador: no hay servidor propio ni se guarda tu ubicación."
+    },
+    "notaPrecio": "La columna Precio muestra el precio más barato publicado por la marca — normalmente el que exige financiamiento propio o bonos. El tooltip trae el precio de lista cuando la marca publica ambos. Donde solo hay un precio, los dos coinciden."
   },
   "autos": [
     {
@@ -117,11 +127,7 @@ window.AUTOS_DATA = {
           "url": "https://www.rutamotor.com/llega-a-chile-el-nuevo-toyota-yaris-cross-hev-el-modelo-de-entrada-en-la-categoria-hibrido-convencional/"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 23490000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Única versión híbrida de la gama.",
-      "preseleccionado": true
+      "paisMarca": "Japonesa"
     },
     {
       "id": "toyota-corolla-cross-xei",
@@ -188,11 +194,7 @@ window.AUTOS_DATA = {
           "url": "https://www.chileautos.cl/toyota/corolla-cross/precio/2026/"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 29990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: versión SEG.",
-      "preseleccionado": true
+      "paisMarca": "Japonesa"
     },
     {
       "id": "toyota-corolla-cross-seg",
@@ -249,11 +251,7 @@ window.AUTOS_DATA = {
           "url": "https://www.chileautos.cl/toyota/corolla-cross/precio/2026/"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 29990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Esta ya es la versión tope.",
-      "preseleccionado": true
+      "paisMarca": "Japonesa"
     },
     {
       "id": "hyundai-kona-hev-plus",
@@ -310,10 +308,8 @@ window.AUTOS_DATA = {
         }
       ],
       "paisMarca": "Coreana",
-      "precioFull": 27590000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Hyundai publica la Design a $26.990.000 pero con financiamiento Amicar, así que no es comparable. Uso el precio de lista más alto que sí está publicado.",
-      "preseleccionado": true
+      "precioFinanciado": 23990000,
+      "precioFinanciadoNota": "Precio Hyundai con financiamiento Amicar."
     },
     {
       "id": "hyundai-kona-hev-design",
@@ -366,10 +362,8 @@ window.AUTOS_DATA = {
         }
       ],
       "paisMarca": "Coreana",
-      "precioFull": 27590000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Mismo caso que la Plus: bases de precio mezcladas.",
-      "preseleccionado": true
+      "precioFinanciado": 26990000,
+      "precioFinanciadoNota": "Precio Hyundai con financiamiento Amicar."
     },
     {
       "id": "lexus-lbx-urban",
@@ -424,11 +418,7 @@ window.AUTOS_DATA = {
           "url": "https://www.brunofritsch.cl/lexus-lbx"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 33490000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Solo está publicado el precio de entrada; las versiones Elegant y Relax cuestan más.",
-      "preseleccionado": true
+      "paisMarca": "Japonesa"
     },
     {
       "id": "toyota-bz4x-limited",
@@ -487,11 +477,7 @@ window.AUTOS_DATA = {
           "url": "https://www.publimetro.cl/comercial/2026/01/29/toyota-bz4x-el-primer-suv-100-electrico-de-toyota-llega-a-chile-con-precios-desde-41990000-y-hasta-478-km-de-autonomia/"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 46990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: Limited AWD.",
-      "preseleccionado": true
+      "paisMarca": "Japonesa"
     },
     {
       "id": "tesla-model-y-rwd",
@@ -551,11 +537,7 @@ window.AUTOS_DATA = {
           "url": "https://www.meganoticias.cl/nacional/523884-cuanto-cuesta-tesla-chile-modelos-mas-vendidos-precios-2026-05-06-2026.html"
         }
       ],
-      "paisMarca": "Estadounidense",
-      "precioFull": 42000000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: Premium AWD.",
-      "preseleccionado": true
+      "paisMarca": "Estadounidense"
     },
     {
       "id": "mg-zs-hybrid-plus",
@@ -610,11 +592,7 @@ window.AUTOS_DATA = {
           "url": "https://www.mgmotor.cl/mg-news/cl-mg-motor-presenta-oficialmente-el-all-new-mg-zs-hybrid-junto-a-su-nuevo-ceo-regional"
         }
       ],
-      "paisMarca": "China",
-      "precioFull": 17990000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Solo está publicado el precio de lanzamiento.",
-      "preseleccionado": false
+      "paisMarca": "China"
     },
     {
       "id": "haval-jolion-hev",
@@ -666,11 +644,7 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/mercado/suv-hibridos"
         }
       ],
-      "paisMarca": "China",
-      "precioFull": 26490000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: versión Elite.",
-      "preseleccionado": false
+      "paisMarca": "China"
     },
     {
       "id": "chery-tiggo-4-hev",
@@ -726,11 +700,7 @@ window.AUTOS_DATA = {
           "url": "https://www.rutamotor.com/lanzamientos-en-chile/chery-estrena-el-tiggo-4-hev-su-primer-hibrido-sin-recarga-exterior-en-chile/"
         }
       ],
-      "paisMarca": "China",
-      "precioFull": 20990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "La Pro Max ya es el tope.",
-      "preseleccionado": false
+      "paisMarca": "China"
     },
     {
       "id": "suzuki-grand-vitara-hybrid",
@@ -786,11 +756,7 @@ window.AUTOS_DATA = {
           "url": "https://www.suzuki.cl/media/ry0demqj/ficha-tecnica_grand-vitara-hybrid.pdf"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 26190000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope publicado de la gama Grand Vitara 2026.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "byd-song-pro-dmi",
@@ -846,11 +812,7 @@ window.AUTOS_DATA = {
           "url": "https://byd-auto.cl/modelos/byd-song-plus-dm-i/"
         }
       ],
-      "paisMarca": "China",
-      "precioFull": 31990000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Versión única publicada.",
-      "preseleccionado": false
+      "paisMarca": "China"
     },
     {
       "id": "toyota-corolla-hev",
@@ -905,11 +867,7 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/elegir-tipo/autos-hibridos"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 24964024,
-      "precioFullEstimado": true,
-      "precioFullNota": "Solo tengo el precio de entrada del Corolla híbrido.",
-      "preseleccionado": true
+      "paisMarca": "Japonesa"
     },
     {
       "id": "hyundai-tucson-hev-plus",
@@ -921,7 +879,7 @@ window.AUTOS_DATA = {
       "carroceria": "SUV mediano",
       "origen": "Corea",
       "precioNuevo": 28990000,
-      "precioNuevoNota": "Design $33.690.000 y Limited 4WD $37.490.000. Precios Hyundai, con financiamiento Amicar.",
+      "precioNuevoNota": "Hyundai solo publica precios con financiamiento Amicar: $28.990.000 la Plus, $33.690.000 la Design y $37.490.000 la 4WD Limited. No hay precio de lista publicado.",
       "precioUsado": 25000000,
       "precioUsadoNota": "Estimado.",
       "precioUsadoEstimado": true,
@@ -960,11 +918,7 @@ window.AUTOS_DATA = {
           "url": "https://www.hyundai.cl/nuestros-modelos/ecologicos/the-new-tucson-hibrido/especificaciones-tecnicas/"
         }
       ],
-      "paisMarca": "Coreana",
-      "precioFull": 37490000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: 4WD Limited.",
-      "preseleccionado": false
+      "paisMarca": "Coreana"
     },
     {
       "id": "kia-niro-hev-lx",
@@ -1020,11 +974,7 @@ window.AUTOS_DATA = {
           "url": "https://www.kia.cl/content/dam/indumotora/general/fichas-tecnicas/2023/10-octubre/Ficha-Tecnica-NiroHibrido.pdf"
         }
       ],
-      "paisMarca": "Coreana",
-      "precioFull": 34990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: EX Full.",
-      "preseleccionado": false
+      "paisMarca": "Coreana"
     },
     {
       "id": "kia-sportage-hev-lx",
@@ -1081,10 +1031,8 @@ window.AUTOS_DATA = {
         }
       ],
       "paisMarca": "Coreana",
-      "precioFull": 42990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: X-Line AWD.",
-      "preseleccionado": false
+      "precioFinanciado": 31990000,
+      "precioFinanciadoNota": "Precio promocional Kia para la LX."
     },
     {
       "id": "kia-sportage-hev-xline",
@@ -1136,11 +1084,7 @@ window.AUTOS_DATA = {
           "url": "https://noticias.autocosmos.cl/2025/12/16/kia-sportage-hev-2026-en-chile-diversificando-la-electrificacion"
         }
       ],
-      "paisMarca": "Coreana",
-      "precioFull": 42990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Esta ya es la versión tope.",
-      "preseleccionado": false
+      "paisMarca": "Coreana"
     },
     {
       "id": "kia-sorento-hev-2wd",
@@ -1192,11 +1136,7 @@ window.AUTOS_DATA = {
           "url": "https://www.latercera.com/mtonline/noticia/nuevo-kia-sorento-hev-crece-la-ofensiva-hibrida-de-la-marca-en-chile/"
         }
       ],
-      "paisMarca": "Coreana",
-      "precioFull": 51990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: AWD.",
-      "preseleccionado": false
+      "paisMarca": "Coreana"
     },
     {
       "id": "kia-ev5-light",
@@ -1253,10 +1193,8 @@ window.AUTOS_DATA = {
         }
       ],
       "paisMarca": "Coreana",
-      "precioFull": 49990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de gama: versión Wave.",
-      "preseleccionado": false
+      "precioFinanciado": 39990000,
+      "precioFinanciadoNota": "Incluye bonos de marca y financiamiento."
     },
     {
       "id": "toyota-rav4-hev-le",
@@ -1311,11 +1249,7 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/modelos/rav4-hibrida"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 42990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de la gama RAV4 2026.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "lexus-ux-300h",
@@ -1366,11 +1300,7 @@ window.AUTOS_DATA = {
           "url": "https://www.brunofritsch.cl/lexus-ux"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 39990000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Solo tengo el precio de la Premium; la F Sport cuesta más.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "nissan-xtrail-epower",
@@ -1421,11 +1351,7 @@ window.AUTOS_DATA = {
           "url": "https://www.nissan.cl/vehiculos/nuevos/nissan-xtrail-epower.html"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 36610000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Solo está publicado el precio de entrada; la Exclusive cuesta más.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "subaru-crosstrek-hybrid",
@@ -1480,11 +1406,7 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/modelos/subaru-crosstrek"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 31390000,
-      "precioFullEstimado": false,
-      "precioFullNota": "La Touring ES ya es el tope de la gama híbrida.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "subaru-forester-strong-hybrid",
@@ -1540,11 +1462,7 @@ window.AUTOS_DATA = {
           "url": "https://www.mercadolibre.cl/blog/mo-lanzamientos-nuevo-subaru-forester-2026-precio-versiones-y-ficha-tecnica"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 41990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "La HEV Touring es el tope de toda la gama Forester.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "honda-crv-ehev",
@@ -1596,11 +1514,7 @@ window.AUTOS_DATA = {
           "url": "https://www.rutamotor.com/honda-retorna-a-los-hibridos-en-chile-y-presenta-el-nuevo-cr-v-hev/"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 51990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Versión única de equipamiento.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "mitsubishi-outlander-phev",
@@ -1656,11 +1570,7 @@ window.AUTOS_DATA = {
           "url": "https://www.difor.cl/mitsubishi-motors-outlander-phev-chile"
         }
       ],
-      "paisMarca": "Japonesa",
-      "precioFull": 44990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Versión única.",
-      "preseleccionado": false
+      "paisMarca": "Japonesa"
     },
     {
       "id": "hyundai-kona-electrico",
@@ -1717,11 +1627,7 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/noticias/autofact/autos-electricos"
         }
       ],
-      "paisMarca": "Coreana",
-      "precioFull": 36990000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Solo está publicado el precio de entrada.",
-      "preseleccionado": false
+      "paisMarca": "Coreana"
     },
     {
       "id": "suzuki-swift-hybrid",
@@ -1781,11 +1687,7 @@ window.AUTOS_DATA = {
           "titulo": "Autofact — Suzuki Swift Híbrido",
           "url": "https://www.autofact.cl/blog/comprar-auto/modelos/suzuki-swift-hibrido"
         }
-      ],
-      "precioFull": 17790000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de la gama Swift Hybrid.",
-      "preseleccionado": false
+      ]
     },
     {
       "id": "suzuki-fronx-hybrid",
@@ -1840,11 +1742,7 @@ window.AUTOS_DATA = {
           "titulo": "Rutamotor — Suzuki estrena el Fronx, el híbrido más barato",
           "url": "https://www.rutamotor.com/lanzamientos/suzuki-estrena-su-totalmente-nuevo-fronx-que-se-posiciona-como-el-hibrido-mas-barato-del-mercado/"
         }
-      ],
-      "precioFull": 14590000,
-      "precioFullEstimado": true,
-      "precioFullNota": "Precio de entrada; la GLX AT cuesta más pero no está publicada.",
-      "preseleccionado": false
+      ]
     },
     {
       "id": "suzuki-across-hybrid",
@@ -1901,11 +1799,7 @@ window.AUTOS_DATA = {
           "titulo": "Emol — Suzuki lanza el Across Hybrid",
           "url": "https://www.emol.com/noticias/Autos/2026/04/09/1196790/suzuki-lanza-el-across-hybrid.html"
         }
-      ],
-      "precioFull": 20690000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Tope de la gama Across.",
-      "preseleccionado": false
+      ]
     },
     {
       "id": "toyota-yaris-sedan-hev",
@@ -1960,11 +1854,7 @@ window.AUTOS_DATA = {
           "titulo": "Autocosmos — Toyota comercializa el Yaris Sedán híbrido en Chile",
           "url": "https://noticias.autocosmos.cl/2026/02/17/toyota-ya-comercializa-en-chile-la-variante-hibrida-de-su-yaris-sedan"
         }
-      ],
-      "precioFull": 21990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "Versión única: equipamiento G.",
-      "preseleccionado": true
+      ]
     },
     {
       "id": "mg3-hybrid-plus",
@@ -2020,11 +1910,7 @@ window.AUTOS_DATA = {
           "titulo": "km77 — MG3 Hybrid+ ficha técnica",
           "url": "https://www.km77.com/coches/mg/mg3/2024/estandar/hev/mg3-hybrid/datos"
         }
-      ],
-      "precioFull": 16990000,
-      "precioFullEstimado": false,
-      "precioFullNota": "El Hybrid+ es el tope de la gama MG3.",
-      "preseleccionado": false
+      ]
     }
   ]
 };
