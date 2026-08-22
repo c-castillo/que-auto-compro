@@ -7,7 +7,8 @@ Datos recopilados en agosto de 2026 desde sitios oficiales de marca en Chile, ch
 prensa especializada. Cada modelo lleva sus fuentes enlazadas en el panel de detalle. El precio de
 la bencina se puede traer en vivo desde bencinaenlinea.cl según tu ubicación.
 
-**33 modelos**, con prioridad en marcas japonesas y coreanas:
+**43 modelos** — cada versión va como fila propia, no solo el tope de gama — con prioridad
+en marcas japonesas y coreanas:
 
 | Origen | Modelos | Marcas |
 |---|---|---|
@@ -66,7 +67,7 @@ python3 -m http.server 8777   # → http://localhost:8777
 
 ## El score (0-100)
 
-Cinco criterios, ponderados. Los pesos se ajustan con sliders en la página y el desglose de
+Seis criterios, ponderados. Los pesos se ajustan con sliders en la página y el desglose de
 cada auto aparece en su panel de detalle. Están ordenados por importancia:
 
 | Peso | Criterio | Cómo se calcula |
@@ -74,6 +75,7 @@ cada auto aparece en su panel de detalle. Están ordenados por importancia:
 | **30** | **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
 | **30** | **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
 | **25** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
+| **15** | **Equipamiento** | Nivel de la versión dentro de su propia gama: entrada 40 · intermedia 70 · tope 100 · única 70 |
 | **20** | **Espacio interior** | Proxy: **altura de cabina** (60%) + distancia entre ejes (40%). La altura de cabina es el alto total menos el despeje al piso |
 | **5** | **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
 
@@ -101,20 +103,24 @@ La **base de cálculo** se elige arriba, junto a los precios de bencina y kWh:
 
 Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
 
-### Las tres advertencias importantes
+### Las cuatro advertencias importantes
 
-1. **En base ciudad, el costo premia a quien homologa más agresivo.** Hyundai declara 40,1 km/l
+1. **Equipamiento mide posición relativa, no equipamiento absoluto.** Un tope de gama barato
+   puntúa 100 y una versión de entrada cara puntúa 40, aunque la segunda venga con más cosas.
+   El criterio sabe que el SEG trae más que el XEI; no sabe comparar un Swift GLX con un RAV4 LE.
+
+2. **En base ciudad, el costo premia a quien homologa más agresivo.** Hyundai declara 40,1 km/l
    urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo. Con base
    ciudad el Kona sube al podio por una diferencia de homologación, no de mecánica; con base mixto
    cae al puesto 10, porque ahí su cifra (22,7) viene de un test independiente. Por eso el default
    es mixto. El caso extremo es el MG ZS: su costo mixto se deriva de unos 43,5 km/l urbanos
    declarados, así que tómalo con pinzas (va marcado con `~`).
 
-2. **Espacio y tamaño se contradicen por definición.** Uno premia autos altos y con buena
+3. **Espacio y tamaño se contradicen por definición.** Uno premia autos altos y con buena
    distancia entre ejes; el otro premia autos chicos, así que en parte se cancelan. Con los pesos
    por defecto (20 y 5) el espacio manda sobre el estacionar, y el ranking lo deciden costo, precio y marca. Si ir cómodo
    pasa a importar, sube *Espacio* — el orden cambia bastante.
-3. **El criterio de espacio es un proxy, no un dato.** No hay altura libre al techo publicada para
+4. **El criterio de espacio es un proxy, no un dato.** No hay altura libre al techo publicada para
    casi ningún modelo en Chile. Uso **altura de cabina** = alto total − despeje al piso, que es
    mejor proxy que el alto pelado: el Yaris Cross mide 1.615 mm pero 210 son despeje, así que por
    dentro es más bajo (1.405) que un Corolla Cross de 1.620 con 160 de despeje (1.460). Tres

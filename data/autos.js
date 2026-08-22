@@ -20,12 +20,13 @@ window.AUTOS_DATA = {
     "notaOrigen": "La columna \"Origen marca\" permite filtrar por procedencia. Ojo: el país de la marca no es el de fabricación — el Kia EV5 es coreano de marca pero se fabrica en China, y el Corolla Cross es japonés de marca pero viene de Brasil. La columna \"Origen\" del detalle indica dónde se fabrica.",
     "notaAlcance": "La tabla ya no es solo de SUV: incluye hatchback y sedán híbridos, que suelen ser más baratos y eficientes por el mismo tren motriz. Filtra por Carrocería si quieres volver a ver solo SUV.",
     "score": {
-      "descripcion": "Puntaje 0-100 compuesto por cinco criterios ponderados. Los pesos no tienen que sumar 100: el puntaje se normaliza por su total. Por defecto: precio 30, marca 30, costo por 100 km 25, espacio 20 y facilidad de estacionar 5.",
+      "descripcion": "Puntaje 0-100 compuesto por seis criterios ponderados. Los pesos no tienen que sumar 100: el puntaje se normaliza por su total. Por defecto: precio 30, marca 30, costo por 100 km 25, espacio 20, equipamiento 15 y facilidad de estacionar 5.",
       "pesos": {
         "precio": 30,
         "marca": 30,
         "costo": 25,
         "espacio": 20,
+        "equipamiento": 15,
         "tamano": 5
       },
       "referencia": {
@@ -64,7 +65,14 @@ window.AUTOS_DATA = {
       "factorCiudadEV": 0.9,
       "baseCostoDefault": "mixto",
       "notaCosto": "Costo por 100 km: es el criterio de operación del score. Convierte consumo en plata, que es lo único comparable entre un híbrido y un eléctrico (km/l y kWh/100 km no se comparan entre sí). Puedes elegir la base de cálculo — ciclo mixto o ciclo ciudad — junto a los precios de bencina y kWh. Donde falta la cifra de un ciclo se deriva del otro: ×1,15 de mixto a ciudad en híbridos full (regeneran en cada frenada), ×0,95 en mild hybrid y enchufables. Los valores derivados van marcados \"der.\" en la tabla. Ojo: cuando la base es ciudad, el criterio favorece a las marcas que homologan más agresivo en Chile (Hyundai declara 40,1 km/l urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo). En ciclo mixto esa distorsión es bastante menor.",
-      "factorPhevSinCarga": 0.8
+      "factorPhevSinCarga": 0.8,
+      "equipamientoPuntos": {
+        "entrada": 40,
+        "medio": 70,
+        "tope": 100,
+        "unica": 70
+      },
+      "notaEquipamiento": "Equipamiento puntúa el nivel de la versión DENTRO de su propia gama: entrada 40, intermedia 70, tope 100. Las versiones únicas puntúan 70, porque no hay dónde elegir pero eso tampoco prueba que vengan bien equipadas. Ojo con la limitación: es una posición relativa, no un conteo de equipamiento absoluto. El tope de gama de un auto barato puede traer menos que la versión de entrada de uno caro, y este criterio no lo ve. Se edita en meta.score.equipamientoPuntos y en el campo equipamiento de cada modelo."
     },
     "bencina": {
       "precioDefault": 1433,
@@ -148,7 +156,8 @@ window.AUTOS_DATA = {
       ],
       "paisMarca": "Japonesa",
       "precioFinanciado": 24290000,
-      "precioFinanciadoNota": "Precio de la XG con financiamiento de marca."
+      "precioFinanciadoNota": "Precio de la XG con financiamiento de marca.",
+      "equipamiento": "tope"
     },
     {
       "id": "toyota-corolla-cross-xei",
@@ -227,7 +236,8 @@ window.AUTOS_DATA = {
       ],
       "paisMarca": "Japonesa",
       "precioFinanciado": 25490000,
-      "precioFinanciadoNota": "Bono total de $2.500.000: $1.500.000 de marca más $1.000.000 por financiar con MAF. Al contado queda en $26.490.000."
+      "precioFinanciadoNota": "Bono total de $2.500.000: $1.500.000 de marca más $1.000.000 por financiar con MAF. Al contado queda en $26.490.000.",
+      "equipamiento": "entrada"
     },
     {
       "id": "toyota-corolla-cross-seg",
@@ -294,7 +304,8 @@ window.AUTOS_DATA = {
           "url": "https://kovacstoyota.cl/suv/corolla-cross-hev.html"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "tope"
     },
     {
       "id": "hyundai-kona-hev-plus",
@@ -352,7 +363,8 @@ window.AUTOS_DATA = {
       ],
       "paisMarca": "Coreana",
       "precioFinanciado": 23990000,
-      "precioFinanciadoNota": "Precio Hyundai con financiamiento Amicar."
+      "precioFinanciadoNota": "Precio Hyundai con financiamiento Amicar.",
+      "equipamiento": "entrada"
     },
     {
       "id": "hyundai-kona-hev-design",
@@ -406,7 +418,8 @@ window.AUTOS_DATA = {
       ],
       "paisMarca": "Coreana",
       "precioFinanciado": 26990000,
-      "precioFinanciadoNota": "Precio Hyundai con financiamiento Amicar."
+      "precioFinanciadoNota": "Precio Hyundai con financiamiento Amicar.",
+      "equipamiento": "tope"
     },
     {
       "id": "lexus-lbx-urban",
@@ -461,7 +474,8 @@ window.AUTOS_DATA = {
           "url": "https://www.brunofritsch.cl/lexus-lbx"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "entrada"
     },
     {
       "id": "toyota-bz4x-limited",
@@ -520,7 +534,8 @@ window.AUTOS_DATA = {
           "url": "https://www.publimetro.cl/comercial/2026/01/29/toyota-bz4x-el-primer-suv-100-electrico-de-toyota-llega-a-chile-con-precios-desde-41990000-y-hasta-478-km-de-autonomia/"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "entrada"
     },
     {
       "id": "tesla-model-y-rwd",
@@ -580,7 +595,8 @@ window.AUTOS_DATA = {
           "url": "https://www.meganoticias.cl/nacional/523884-cuanto-cuesta-tesla-chile-modelos-mas-vendidos-precios-2026-05-06-2026.html"
         }
       ],
-      "paisMarca": "Estadounidense"
+      "paisMarca": "Estadounidense",
+      "equipamiento": "entrada"
     },
     {
       "id": "mg-zs-hybrid-plus",
@@ -635,7 +651,8 @@ window.AUTOS_DATA = {
           "url": "https://www.mgmotor.cl/mg-news/cl-mg-motor-presenta-oficialmente-el-all-new-mg-zs-hybrid-junto-a-su-nuevo-ceo-regional"
         }
       ],
-      "paisMarca": "China"
+      "paisMarca": "China",
+      "equipamiento": "unica"
     },
     {
       "id": "haval-jolion-hev",
@@ -687,7 +704,8 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/mercado/suv-hibridos"
         }
       ],
-      "paisMarca": "China"
+      "paisMarca": "China",
+      "equipamiento": "entrada"
     },
     {
       "id": "chery-tiggo-4-hev",
@@ -743,7 +761,8 @@ window.AUTOS_DATA = {
           "url": "https://www.rutamotor.com/lanzamientos-en-chile/chery-estrena-el-tiggo-4-hev-su-primer-hibrido-sin-recarga-exterior-en-chile/"
         }
       ],
-      "paisMarca": "China"
+      "paisMarca": "China",
+      "equipamiento": "tope"
     },
     {
       "id": "suzuki-grand-vitara-hybrid",
@@ -799,7 +818,8 @@ window.AUTOS_DATA = {
           "url": "https://www.suzuki.cl/media/ry0demqj/ficha-tecnica_grand-vitara-hybrid.pdf"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "medio"
     },
     {
       "id": "byd-song-pro-dmi",
@@ -855,7 +875,8 @@ window.AUTOS_DATA = {
           "url": "https://byd-auto.cl/modelos/byd-song-plus-dm-i/"
         }
       ],
-      "paisMarca": "China"
+      "paisMarca": "China",
+      "equipamiento": "unica"
     },
     {
       "id": "toyota-corolla-hev",
@@ -910,7 +931,8 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/elegir-tipo/autos-hibridos"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "entrada"
     },
     {
       "id": "hyundai-tucson-hev-plus",
@@ -961,7 +983,8 @@ window.AUTOS_DATA = {
           "url": "https://www.hyundai.cl/nuestros-modelos/ecologicos/the-new-tucson-hibrido/especificaciones-tecnicas/"
         }
       ],
-      "paisMarca": "Coreana"
+      "paisMarca": "Coreana",
+      "equipamiento": "entrada"
     },
     {
       "id": "kia-niro-hev-lx",
@@ -1017,7 +1040,8 @@ window.AUTOS_DATA = {
           "url": "https://www.kia.cl/content/dam/indumotora/general/fichas-tecnicas/2023/10-octubre/Ficha-Tecnica-NiroHibrido.pdf"
         }
       ],
-      "paisMarca": "Coreana"
+      "paisMarca": "Coreana",
+      "equipamiento": "entrada"
     },
     {
       "id": "kia-sportage-hev-lx",
@@ -1075,7 +1099,8 @@ window.AUTOS_DATA = {
       ],
       "paisMarca": "Coreana",
       "precioFinanciado": 31990000,
-      "precioFinanciadoNota": "Precio promocional Kia para la LX."
+      "precioFinanciadoNota": "Precio promocional Kia para la LX.",
+      "equipamiento": "entrada"
     },
     {
       "id": "kia-sportage-hev-xline",
@@ -1127,7 +1152,8 @@ window.AUTOS_DATA = {
           "url": "https://noticias.autocosmos.cl/2025/12/16/kia-sportage-hev-2026-en-chile-diversificando-la-electrificacion"
         }
       ],
-      "paisMarca": "Coreana"
+      "paisMarca": "Coreana",
+      "equipamiento": "tope"
     },
     {
       "id": "kia-sorento-hev-2wd",
@@ -1179,7 +1205,8 @@ window.AUTOS_DATA = {
           "url": "https://www.latercera.com/mtonline/noticia/nuevo-kia-sorento-hev-crece-la-ofensiva-hibrida-de-la-marca-en-chile/"
         }
       ],
-      "paisMarca": "Coreana"
+      "paisMarca": "Coreana",
+      "equipamiento": "entrada"
     },
     {
       "id": "kia-ev5-light",
@@ -1237,7 +1264,8 @@ window.AUTOS_DATA = {
       ],
       "paisMarca": "Coreana",
       "precioFinanciado": 39990000,
-      "precioFinanciadoNota": "Incluye bonos de marca y financiamiento."
+      "precioFinanciadoNota": "Incluye bonos de marca y financiamiento.",
+      "equipamiento": "entrada"
     },
     {
       "id": "toyota-rav4-hev-le",
@@ -1292,7 +1320,8 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/modelos/rav4-hibrida"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "entrada"
     },
     {
       "id": "lexus-ux-300h",
@@ -1343,7 +1372,8 @@ window.AUTOS_DATA = {
           "url": "https://www.brunofritsch.cl/lexus-ux"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "medio"
     },
     {
       "id": "nissan-xtrail-epower",
@@ -1394,7 +1424,8 @@ window.AUTOS_DATA = {
           "url": "https://www.nissan.cl/vehiculos/nuevos/nissan-xtrail-epower.html"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "entrada"
     },
     {
       "id": "subaru-crosstrek-hybrid",
@@ -1449,7 +1480,8 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/comprar-auto/modelos/subaru-crosstrek"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "tope"
     },
     {
       "id": "subaru-forester-strong-hybrid",
@@ -1505,7 +1537,8 @@ window.AUTOS_DATA = {
           "url": "https://www.mercadolibre.cl/blog/mo-lanzamientos-nuevo-subaru-forester-2026-precio-versiones-y-ficha-tecnica"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "tope"
     },
     {
       "id": "honda-crv-ehev",
@@ -1557,7 +1590,8 @@ window.AUTOS_DATA = {
           "url": "https://www.rutamotor.com/honda-retorna-a-los-hibridos-en-chile-y-presenta-el-nuevo-cr-v-hev/"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "unica"
     },
     {
       "id": "mitsubishi-outlander-phev",
@@ -1613,7 +1647,8 @@ window.AUTOS_DATA = {
           "url": "https://www.difor.cl/mitsubishi-motors-outlander-phev-chile"
         }
       ],
-      "paisMarca": "Japonesa"
+      "paisMarca": "Japonesa",
+      "equipamiento": "unica"
     },
     {
       "id": "hyundai-kona-electrico",
@@ -1670,7 +1705,8 @@ window.AUTOS_DATA = {
           "url": "https://www.autofact.cl/blog/noticias/autofact/autos-electricos"
         }
       ],
-      "paisMarca": "Coreana"
+      "paisMarca": "Coreana",
+      "equipamiento": "entrada"
     },
     {
       "id": "suzuki-swift-hybrid",
@@ -1730,7 +1766,8 @@ window.AUTOS_DATA = {
           "titulo": "Autofact — Suzuki Swift Híbrido",
           "url": "https://www.autofact.cl/blog/comprar-auto/modelos/suzuki-swift-hibrido"
         }
-      ]
+      ],
+      "equipamiento": "tope"
     },
     {
       "id": "suzuki-fronx-hybrid",
@@ -1785,7 +1822,8 @@ window.AUTOS_DATA = {
           "titulo": "Rutamotor — Suzuki estrena el Fronx, el híbrido más barato",
           "url": "https://www.rutamotor.com/lanzamientos/suzuki-estrena-su-totalmente-nuevo-fronx-que-se-posiciona-como-el-hibrido-mas-barato-del-mercado/"
         }
-      ]
+      ],
+      "equipamiento": "tope"
     },
     {
       "id": "suzuki-across-hybrid",
@@ -1842,7 +1880,8 @@ window.AUTOS_DATA = {
           "titulo": "Emol — Suzuki lanza el Across Hybrid",
           "url": "https://www.emol.com/noticias/Autos/2026/04/09/1196790/suzuki-lanza-el-across-hybrid.html"
         }
-      ]
+      ],
+      "equipamiento": "entrada"
     },
     {
       "id": "toyota-yaris-sedan-hev",
@@ -1897,7 +1936,8 @@ window.AUTOS_DATA = {
           "titulo": "Autocosmos — Toyota comercializa el Yaris Sedán híbrido en Chile",
           "url": "https://noticias.autocosmos.cl/2026/02/17/toyota-ya-comercializa-en-chile-la-variante-hibrida-de-su-yaris-sedan"
         }
-      ]
+      ],
+      "equipamiento": "unica"
     },
     {
       "id": "mg3-hybrid-plus",
@@ -1953,7 +1993,579 @@ window.AUTOS_DATA = {
           "titulo": "km77 — MG3 Hybrid+ ficha técnica",
           "url": "https://www.km77.com/coches/mg/mg3/2024/estandar/hev/mg3-hybrid/datos"
         }
-      ]
+      ],
+      "equipamiento": "tope"
+    },
+    {
+      "id": "toyota-yaris-cross-xi",
+      "marca": "Toyota",
+      "modelo": "Yaris Cross",
+      "version": "1.5 XI Hybrid 4x2 eCVT",
+      "anio": 2026,
+      "tipo": "HEV",
+      "carroceria": "SUV subcompacto",
+      "origen": "Indonesia",
+      "precioNuevo": 23090000,
+      "precioNuevoNota": "Precio al contado de la XI, versión de entrada del Yaris Cross híbrido.",
+      "precioUsado": 19500000,
+      "precioUsadoNota": "Estimado.",
+      "precioUsadoEstimado": true,
+      "dim": {
+        "largo": 4310,
+        "ancho": 1770,
+        "alto": 1615,
+        "ejes": 2620,
+        "maletero": 466,
+        "despeje": 210
+      },
+      "potencia": 125,
+      "torque": 141,
+      "traccion": "4x2",
+      "transmision": "e-CVT",
+      "rend": {
+        "ciudad": 32,
+        "carretera": null,
+        "mixto": 20.8,
+        "ciclo": "WLTP",
+        "cicloCiudad": "Chile"
+      },
+      "ev": null,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 21490000,
+          "clase": "nuevo",
+          "fuente": "tienda.toyota.cl (financiado)"
+        }
+      ],
+      "notas": "Versión de entrada: no trae Toyota Safety Sense completo ni el tablero digital LED continuo de la XG.",
+      "fuentes": [
+        {
+          "titulo": "Toyota Chile — Yaris Cross Hybrid",
+          "url": "https://toyota.cl/modelos/suv/yaris-cross-hybrid/"
+        },
+        {
+          "titulo": "Rutamotor — Llega a Chile el Yaris Cross HEV",
+          "url": "https://www.rutamotor.com/llega-a-chile-el-nuevo-toyota-yaris-cross-hev-el-modelo-de-entrada-en-la-categoria-hibrido-convencional/"
+        },
+        {
+          "titulo": "Tienda Toyota Chile — Yaris Cross Híbrido",
+          "url": "https://tienda.toyota.cl/index.php?id_product=785&rewrite=yaris-cross&controller=product"
+        },
+        {
+          "titulo": "Salfa Automotriz — Yaris Cross HEV",
+          "url": "https://www.salfaautomotriz.cl/web/guest/detalle/-/vehiculo/autos/toyota/yaris-cross-xi-1-5-cvt-hibrido"
+        }
+      ],
+      "paisMarca": "Japonesa",
+      "precioFinanciado": 21490000,
+      "precioFinanciadoNota": "Con bono total de $3.100.000: $1.000.000 de marca más $2.100.000 del plan Renueve de MAF.",
+      "equipamiento": "entrada"
+    },
+    {
+      "id": "hyundai-tucson-hev-design",
+      "marca": "Hyundai",
+      "modelo": "Tucson",
+      "version": "1.6T HEV Design 4x2",
+      "anio": 2026,
+      "tipo": "HEV",
+      "carroceria": "SUV mediano",
+      "origen": "Corea",
+      "precioNuevo": 33690000,
+      "precioNuevoNota": "Precio Hyundai con financiamiento Amicar. Hyundai no publica lista.",
+      "precioUsado": 29000000,
+      "precioUsadoNota": "Estimado.",
+      "precioUsadoEstimado": true,
+      "dim": {
+        "largo": 4640,
+        "ancho": 1865,
+        "alto": 1665,
+        "ejes": 2755,
+        "maletero": 539,
+        "despeje": 180
+      },
+      "potencia": 227,
+      "torque": 350,
+      "traccion": "4x2",
+      "transmision": "AT 6v",
+      "rend": {
+        "ciudad": 30.3,
+        "carretera": 14.7,
+        "mixto": null,
+        "ciclo": null,
+        "cicloCiudad": "Chile"
+      },
+      "ev": null,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 33690000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl"
+        }
+      ],
+      "notas": "Escalón intermedio del Tucson híbrido.",
+      "fuentes": [
+        {
+          "titulo": "Hyundai Chile — ficha técnica Tucson Híbrido",
+          "url": "https://www.hyundai.cl/nuestros-modelos/ecologicos/the-new-tucson-hibrido/especificaciones-tecnicas/"
+        }
+      ],
+      "paisMarca": "Coreana",
+      "equipamiento": "medio"
+    },
+    {
+      "id": "hyundai-tucson-hev-limited",
+      "marca": "Hyundai",
+      "modelo": "Tucson",
+      "version": "1.6T HEV Limited 4WD",
+      "anio": 2026,
+      "tipo": "HEV",
+      "carroceria": "SUV mediano",
+      "origen": "Corea",
+      "precioNuevo": 37490000,
+      "precioNuevoNota": "Precio Hyundai con financiamiento Amicar. Hyundai no publica lista.",
+      "precioUsado": null,
+      "precioUsadoNota": "Sin usado relevante.",
+      "precioUsadoEstimado": false,
+      "dim": {
+        "largo": 4640,
+        "ancho": 1865,
+        "alto": 1665,
+        "ejes": 2755,
+        "maletero": 539,
+        "despeje": 180
+      },
+      "potencia": 227,
+      "torque": 350,
+      "traccion": "4WD",
+      "transmision": "AT 6v",
+      "rend": {
+        "ciudad": 30.3,
+        "carretera": 14.7,
+        "mixto": null,
+        "ciclo": null,
+        "cicloCiudad": "Chile"
+      },
+      "ev": null,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 37490000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl"
+        }
+      ],
+      "notas": "Tope del Tucson híbrido y el único con tracción integral.",
+      "fuentes": [
+        {
+          "titulo": "Hyundai Chile — ficha técnica Tucson Híbrido",
+          "url": "https://www.hyundai.cl/nuestros-modelos/ecologicos/the-new-tucson-hibrido/especificaciones-tecnicas/"
+        }
+      ],
+      "paisMarca": "Coreana",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "kia-niro-hev-ex",
+      "marca": "Kia",
+      "modelo": "Niro",
+      "version": "1.6 HEV EX Full 6DCT",
+      "anio": 2026,
+      "tipo": "HEV",
+      "carroceria": "SUV compacto",
+      "origen": "Corea",
+      "precioNuevo": 34990000,
+      "precioNuevoNota": "Versión tope del Niro híbrido.",
+      "precioUsado": 29500000,
+      "precioUsadoNota": "Estimado.",
+      "precioUsadoEstimado": true,
+      "dim": {
+        "largo": 4420,
+        "ancho": 1825,
+        "alto": 1560,
+        "ejes": 2720,
+        "maletero": 451,
+        "maleteroMax": 1445,
+        "despeje": 155
+      },
+      "potencia": 141,
+      "torque": 265,
+      "traccion": "4x2",
+      "transmision": "DCT 6v",
+      "rend": {
+        "ciudad": null,
+        "carretera": null,
+        "mixto": 22.2,
+        "ciclo": "WLTP",
+        "cicloCiudad": null
+      },
+      "ev": null,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 34990000,
+          "clase": "nuevo",
+          "fuente": "chileautos / kia.cl"
+        }
+      ],
+      "notas": "Tope de gama del Niro.",
+      "fuentes": [
+        {
+          "titulo": "chileautos — precios Kia Niro 2026",
+          "url": "https://www.chileautos.cl/kia/niro/precio/2026/"
+        },
+        {
+          "titulo": "Kia Chile — ficha técnica Niro Híbrido",
+          "url": "https://www.kia.cl/content/dam/indumotora/general/fichas-tecnicas/2023/10-octubre/Ficha-Tecnica-NiroHibrido.pdf"
+        }
+      ],
+      "paisMarca": "Coreana",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "kia-ev5-wave",
+      "marca": "Kia",
+      "modelo": "EV5",
+      "version": "Wave",
+      "anio": 2026,
+      "tipo": "EV",
+      "carroceria": "SUV mediano",
+      "origen": "China",
+      "precioNuevo": 49990000,
+      "precioNuevoNota": "Versión tope. Incluye bonos de marca y financiamiento.",
+      "precioUsado": null,
+      "precioUsadoNota": "Sin mercado usado relevante.",
+      "precioUsadoEstimado": false,
+      "dim": {
+        "largo": 4615,
+        "ancho": 1875,
+        "alto": 1715,
+        "ejes": 2750,
+        "maletero": 513,
+        "despeje": 175
+      },
+      "potencia": 215,
+      "torque": 310,
+      "traccion": "4x2",
+      "transmision": "Directa",
+      "rend": {
+        "ciudad": null,
+        "carretera": null,
+        "mixto": null,
+        "ciclo": null,
+        "cicloCiudad": null
+      },
+      "ev": {
+        "bateriaKwh": 64.2,
+        "autonomiaKm": 400,
+        "consumoKwh100": 16.5
+      },
+      "dimsPorConfirmar": true,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 49990000,
+          "clase": "nuevo",
+          "fuente": "kia.cl"
+        }
+      ],
+      "notas": "Tope de gama del EV5. Dimensiones y consumo de ficha regional: confírmalos.",
+      "fuentes": [
+        {
+          "titulo": "chileautos — Kia EV5 llega a Chile",
+          "url": "https://www.chileautos.cl/noticias/detalle/kia-ev5-el-nuevo-suv-100-electrico-ya-esta-en-chile--29660/"
+        }
+      ],
+      "paisMarca": "Coreana",
+      "precioFinanciado": 49990000,
+      "precioFinanciadoNota": "Incluye bonos de marca y financiamiento.",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "kia-sorento-hev-awd",
+      "marca": "Kia",
+      "modelo": "Sorento",
+      "version": "1.6T HEV AWD",
+      "anio": 2026,
+      "tipo": "HEV",
+      "carroceria": "SUV grande",
+      "origen": "Corea",
+      "precioNuevo": 51990000,
+      "precioNuevoNota": "Versión tope, tracción integral.",
+      "precioUsado": null,
+      "precioUsadoNota": "Sin mercado usado todavía.",
+      "precioUsadoEstimado": false,
+      "dim": {
+        "largo": 4815,
+        "ancho": 1900,
+        "alto": 1700,
+        "ejes": 2815,
+        "maletero": 616,
+        "despeje": 176
+      },
+      "potencia": 238,
+      "torque": 367,
+      "traccion": "AWD",
+      "transmision": "AT 6v",
+      "rend": {
+        "ciudad": null,
+        "carretera": null,
+        "mixto": 13,
+        "ciclo": "estimado",
+        "cicloCiudad": null
+      },
+      "ev": null,
+      "dimsPorConfirmar": true,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 51990000,
+          "clase": "nuevo",
+          "fuente": "La Tercera"
+        }
+      ],
+      "notas": "Tope del Sorento. Siete asientos y 4,8 m: otro segmento.",
+      "fuentes": [
+        {
+          "titulo": "La Tercera — Nuevo Kia Sorento HEV en Chile",
+          "url": "https://www.latercera.com/mtonline/noticia/nuevo-kia-sorento-hev-crece-la-ofensiva-hibrida-de-la-marca-en-chile/"
+        }
+      ],
+      "paisMarca": "Coreana",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "toyota-bz4x-awd",
+      "marca": "Toyota",
+      "modelo": "bZ4X",
+      "version": "Limited AWD",
+      "anio": 2026,
+      "tipo": "EV",
+      "carroceria": "SUV mediano",
+      "origen": "Japón",
+      "precioNuevo": 46990000,
+      "precioNuevoNota": "Versión tope, tracción integral.",
+      "precioUsado": null,
+      "precioUsadoNota": "Sin mercado usado: se lanzó en Chile en enero 2026.",
+      "precioUsadoEstimado": false,
+      "dim": {
+        "largo": 4690,
+        "ancho": 1860,
+        "alto": 1650,
+        "ejes": 2850,
+        "maletero": 452,
+        "despeje": 180
+      },
+      "potencia": 343,
+      "torque": 268,
+      "traccion": "AWD",
+      "transmision": "Directa",
+      "rend": {
+        "ciudad": null,
+        "carretera": null,
+        "mixto": null,
+        "ciclo": null,
+        "cicloCiudad": null
+      },
+      "ev": {
+        "bateriaKwh": 73.1,
+        "autonomiaKm": 453,
+        "consumoKwh100": 15.9
+      },
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 46990000,
+          "clase": "nuevo",
+          "fuente": "Publimetro — lanzamiento Chile"
+        }
+      ],
+      "notas": "AWD: 25 km menos de autonomía y mayor consumo que la 4x2.",
+      "fuentes": [
+        {
+          "titulo": "Toyota Chile — bZ4X",
+          "url": "https://toyota.cl/modelos/suv/auto-electrico-toyota-bz4x/"
+        },
+        {
+          "titulo": "Publimetro — bZ4X llega a Chile desde $41.990.000",
+          "url": "https://www.publimetro.cl/comercial/2026/01/29/toyota-bz4x-el-primer-suv-100-electrico-de-toyota-llega-a-chile-con-precios-desde-41990000-y-hasta-478-km-de-autonomia/"
+        }
+      ],
+      "paisMarca": "Japonesa",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "tesla-model-y-awd",
+      "marca": "Tesla",
+      "modelo": "Model Y",
+      "version": "Premium AWD",
+      "anio": 2026,
+      "tipo": "EV",
+      "carroceria": "SUV mediano",
+      "origen": "China",
+      "precioNuevo": 42000000,
+      "precioNuevoNota": "Versión tope. Los precios Tesla cambian sin aviso.",
+      "precioUsado": null,
+      "precioUsadoNota": "Sin dato de usado confiable.",
+      "precioUsadoEstimado": false,
+      "dim": {
+        "largo": 4790,
+        "ancho": 1982,
+        "alto": 1624,
+        "ejes": 2890,
+        "maletero": 854,
+        "maleteroMax": 2158,
+        "despeje": 167
+      },
+      "potencia": 384,
+      "torque": 420,
+      "traccion": "AWD",
+      "transmision": "Directa",
+      "rend": {
+        "ciudad": null,
+        "carretera": null,
+        "mixto": null,
+        "ciclo": null,
+        "cicloCiudad": null
+      },
+      "ev": {
+        "bateriaKwh": null,
+        "autonomiaKm": null,
+        "consumoKwh100": 13.7
+      },
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 42000000,
+          "clase": "nuevo",
+          "fuente": "meganoticias / cualauto"
+        }
+      ],
+      "notas": "Tracción integral. No tengo autonomía homologada para la versión chilena: aparece como —.",
+      "fuentes": [
+        {
+          "titulo": "CualAuto — Tesla Model Y 2026 Chile",
+          "url": "https://www.cualauto.cl/catalogo/tesla-model-y"
+        },
+        {
+          "titulo": "Meganoticias — precios Tesla en Chile 2026",
+          "url": "https://www.meganoticias.cl/nacional/523884-cuanto-cuesta-tesla-chile-modelos-mas-vendidos-precios-2026-05-06-2026.html"
+        }
+      ],
+      "paisMarca": "Estadounidense",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "haval-jolion-hev-elite",
+      "marca": "Haval",
+      "modelo": "Jolion",
+      "version": "1.5 HEV Elite",
+      "anio": 2026,
+      "tipo": "HEV",
+      "carroceria": "SUV compacto",
+      "origen": "China",
+      "precioNuevo": 26490000,
+      "precioNuevoNota": "Versión tope del Jolion híbrido.",
+      "precioUsado": 21000000,
+      "precioUsadoNota": "Estimado. Los Jolion tienen bastante rotación en el usado.",
+      "precioUsadoEstimado": true,
+      "dim": {
+        "largo": 4472,
+        "ancho": 1841,
+        "alto": 1619,
+        "ejes": 2700,
+        "maletero": 430,
+        "maleteroMax": 1130,
+        "despeje": 165
+      },
+      "potencia": 188,
+      "torque": 375,
+      "traccion": "4x2",
+      "transmision": "DHT",
+      "rend": {
+        "ciudad": 30.4,
+        "carretera": 14.8,
+        "mixto": null,
+        "ciclo": null,
+        "cicloCiudad": "Chile"
+      },
+      "ev": null,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 26490000,
+          "clase": "nuevo",
+          "fuente": "autofact"
+        }
+      ],
+      "notas": "Tope de gama del Jolion.",
+      "fuentes": [
+        {
+          "titulo": "Autofact — SUV híbridos que se venden en Chile",
+          "url": "https://www.autofact.cl/blog/comprar-auto/mercado/suv-hibridos"
+        }
+      ],
+      "paisMarca": "China",
+      "equipamiento": "tope"
+    },
+    {
+      "id": "suzuki-across-hybrid-glx",
+      "marca": "Suzuki",
+      "modelo": "Across",
+      "version": "1.5 GLX Hybrid AT",
+      "anio": 2026,
+      "tipo": "MHEV",
+      "carroceria": "SUV compacto",
+      "origen": "India",
+      "paisMarca": "Japonesa",
+      "precioNuevo": 20690000,
+      "precioNuevoNota": "Tope de la gama Across.",
+      "precioUsado": null,
+      "precioUsadoNota": "Lanzado en abril de 2026, sin usado.",
+      "precioUsadoEstimado": false,
+      "dim": {
+        "largo": 4360,
+        "ancho": null,
+        "alto": null,
+        "ejes": null,
+        "maletero": null,
+        "maleteroMax": 615,
+        "despeje": null
+      },
+      "potencia": null,
+      "torque": null,
+      "traccion": "4x2",
+      "transmision": "MT 5v o AT 6v",
+      "rend": {
+        "ciudad": null,
+        "carretera": null,
+        "mixto": 16.5,
+        "ciclo": "Chile",
+        "cicloCiudad": null
+      },
+      "ev": null,
+      "dimsPorConfirmar": true,
+      "historial": [
+        {
+          "fecha": "2026-08-22",
+          "precio": 20690000,
+          "clase": "nuevo",
+          "fuente": "suzuki.cl / Emol"
+        }
+      ],
+      "notas": "Tope del Across. Ficha técnica incompleta igual que la GL: Suzuki solo publica largo, maletero máximo y consumo.",
+      "fuentes": [
+        {
+          "titulo": "Suzuki Chile — presentación del New Across Hybrid",
+          "url": "https://www.suzuki.cl/blog/suzuki-presenta-en-chile-el-new-across-hybrid/"
+        },
+        {
+          "titulo": "Emol — Suzuki lanza el Across Hybrid",
+          "url": "https://www.emol.com/noticias/Autos/2026/04/09/1196790/suzuki-lanza-el-across-hybrid.html"
+        }
+      ],
+      "equipamiento": "tope"
     }
   ]
 };

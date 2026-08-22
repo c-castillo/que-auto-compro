@@ -190,6 +190,10 @@
 
   const subMarca = c => S.marcaTier[c.marca] ?? 50;
 
+  // Nivel de la versión dentro de su propia gama. Ver meta.score.notaEquipamiento.
+  const EQUIP_NOMBRE = { entrada: 'versión de entrada', medio: 'versión intermedia', tope: 'tope de gama', unica: 'versión única' };
+  const subEquipamiento = c => S.equipamientoPuntos[c.equipamiento] ?? null;
+
   // Comparación contra el auto de referencia, para que cada subpuntaje sea interpretable.
   const delta = (v, ref, u = ' mm') => v == null ? '' : (v - ref >= 0 ? '+' : '−') + Math.abs(v - ref) + u;
 
@@ -215,6 +219,10 @@
     },
 
     { key: 'marca', label: 'Marca', fn: subMarca, pista: c => `nivel de marca: ${c.marca}` },
+    {
+      key: 'equipamiento', label: 'Equipamiento', fn: subEquipamiento,
+      pista: c => EQUIP_NOMBRE[c.equipamiento] || c.equipamiento
+    },
 
     {
       key: 'espacio', label: 'Espacio interior', fn: subEspacio,
@@ -275,6 +283,12 @@
       val: c => c.paisMarca, html: c => esc(c.paisMarca)
     },
     { key: 'tipo', label: 'Tipo', group: 'base', tipo: 'texto', prioridad: 1, html: c => `<span class="tag">${esc(c.tipo)}</span>`, val: c => c.tipo },
+    {
+      key: 'equipamiento', label: 'Equip.', group: 'base', prioridad: 2,
+      val: c => subEquipamiento(c),
+      html: c => `<span class="equip equip-${esc(c.equipamiento)}" title="${esc(EQUIP_NOMBRE[c.equipamiento] || '')}">`
+        + { entrada: '○○●', medio: '○●●', tope: '●●●', unica: '—●—' }[c.equipamiento] + '</span>'
+    },
     {
       key: 'carroceria', label: 'Carr.', group: 'base', tipo: 'texto', prioridad: 2,
       val: c => c.carroceria, html: c => iconoCarroceria(c.carroceria)
@@ -520,6 +534,7 @@
       ['Rendimiento mixto', c.rend.mixto ? num(c.rend.mixto) + ' km/l (' + (c.rend.ciclo || '?') + ')' : '—'],
       [`Costo por 100 km (${state.baseCosto})`, costo100(c) ? '$' + Math.round(costo100(c)).toLocaleString('es-CL') : '—'],
       ['Batería / autonomía', c.ev ? `${c.ev.bateriaKwh} kWh · ${c.ev.autonomiaKm} km` : '—'],
+      ['Equipamiento', EQUIP_NOMBRE[c.equipamiento] || '—'],
       ['Origen', c.origen]
     ];
 
@@ -827,6 +842,7 @@
   estadoGeo(`por defecto: ${B.estacionDefault}`);
   document.getElementById('nota-espacio').textContent = S.notaEspacio;
   document.getElementById('nota-marca').textContent = S.notaMarca;
+  document.getElementById('nota-equipamiento').textContent = S.notaEquipamiento;
   initChips();
   initRangos();
   initPesos();

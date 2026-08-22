@@ -184,6 +184,11 @@ body {
 .carr b { font-size: .62rem; font-weight: 700; letter-spacing: -.02em; }
 .carr .prem { font-style: normal; font-size: .7rem; color: var(--accent); font-weight: 700; }
 
+/* nivel de equipamiento */
+.equip { font-family: var(--mono); font-size: .8rem; letter-spacing: -.05em; cursor: help; color: var(--text-dim); }
+.equip-tope { color: var(--accent); font-weight: 700; }
+.equip-medio { color: var(--text); }
+
 /* marca de precio con financiamiento */
 .fin {
   font-style: normal;
