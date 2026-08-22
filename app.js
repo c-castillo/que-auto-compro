@@ -25,7 +25,10 @@
     sortDir: -1,         // 1 asc, -1 desc
     seleccion: null,
     bencina: DATA.meta.supuestos.precioBencina93,
-    kwh: DATA.meta.supuestos.precioKwh,
+    cargadorCasa: DATA.meta.supuestos.cargadorEnCasaDefault,
+    kwh: DATA.meta.supuestos.cargadorEnCasaDefault
+      ? DATA.meta.supuestos.precioKwhResidencial
+      : DATA.meta.supuestos.precioKwhPublico,
     baseCosto: S.baseCostoDefault
   };
 
@@ -95,7 +98,10 @@
       return car.ev.consumoKwh100 * f * state.kwh;
     }
     const k = kmlPara(car, base);
-    return k ? 100 / k.valor * state.bencina : null;
+    if (!k) return null;
+    // Un PHEV que no se carga anda casi siempre a bencina: rinde menos que su cifra publicada.
+    const penal = (car.tipo === 'PHEV' && !state.cargadorCasa) ? S.factorPhevSinCarga : 1;
+    return 100 / (k.valor * penal) * state.bencina;
   }
 
   /* El precio que se muestra y con el que se puntúa es el más barato publicado por la
@@ -177,7 +183,8 @@
         const v = costo100(c);
         if (v == null) return 'sin dato de consumo';
         const txt = `$${Math.round(v).toLocaleString('es-CL')} / 100 km · ciclo ${state.baseCosto}`;
-        if (c.tipo === 'EV') return txt + ` · ${c.ev.consumoKwh100} kWh/100 km`;
+        if (c.tipo === 'EV') return txt + ` · ${c.ev.consumoKwh100} kWh/100 km a $${state.kwh}/kWh`
+          + (state.cargadorCasa ? ' (residencial)' : ' (carga pública)');
         const k = kmlPara(c, state.baseCosto);
         return txt + ` · ${num(k.valor)} km/l ${k.derivado ? '(derivado)' : k.base}`;
       }
@@ -297,7 +304,10 @@
         const v = costo100(c);
         if (v == null) return nd;
         const k = c.tipo === 'EV' ? null : kmlPara(c, state.baseCosto);
-        return `<span title="ciclo ${state.baseCosto}">`
+        const tarifa = c.tipo === 'EV'
+          ? ` · kWh a $${state.kwh} (${state.cargadorCasa ? 'residencial' : 'carga pública'})`
+          : (c.tipo === 'PHEV' && !state.cargadorCasa ? ' · penalizado por no cargarlo en casa' : '');
+        return `<span title="ciclo ${state.baseCosto}${tarifa}">`
           + (k && k.derivado ? '<span class="est">~</span>' : '')
           + '$' + Math.round(v).toLocaleString('es-CL') + '</span>';
       }
@@ -729,6 +739,24 @@
 
     document.getElementById('btn-geo').addEventListener('click', actualizarBencina);
 
+    /* Sin cargador en casa el kWh sale a tarifa de red pública (~2x la residencial),
+       que es lo que de verdad castiga a los eléctricos. */
+    const scasa = document.getElementById('t-casa');
+    scasa.checked = state.cargadorCasa;
+    const pintarKwh = () => {
+      document.getElementById('lbl-kwh').textContent = state.cargadorCasa ? 'residencial' : 'carga pública';
+    };
+    scasa.addEventListener('change', () => {
+      state.cargadorCasa = scasa.checked;
+      state.kwh = state.cargadorCasa
+        ? DATA.meta.supuestos.precioKwhResidencial
+        : DATA.meta.supuestos.precioKwhPublico;
+      sk.value = state.kwh;
+      pintarKwh();
+      renderHead(); renderBody(); renderDetalle();
+    });
+    pintarKwh();
+
     const sbase = document.getElementById('s-base');
     sbase.value = state.baseCosto;
     sbase.addEventListener('change', () => {
@@ -755,6 +783,7 @@
     `Score: ${S.descripcion} La referencia de tamaño es un ${S.referencia.nombre} (${S.referencia.largo} × ${S.referencia.ancho} mm). ${S.referencia.nota}`;
   document.getElementById('nota-costo').textContent = S.notaCosto;
   document.getElementById('nota-bencina').textContent = B.nota;
+  document.getElementById('nota-carga').textContent = DATA.meta.notaCarga;
   document.getElementById('nota-precio').textContent = DATA.meta.notaPrecio;
   estadoGeo(`por defecto: ${B.estacionDefault}`);
   document.getElementById('nota-espacio').textContent = S.notaEspacio;

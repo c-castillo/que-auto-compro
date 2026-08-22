@@ -86,7 +86,8 @@
     <label>bencina 93 <input type="number" id="s-bencina" step="10"> $/L</label>
     <button type="button" id="btn-geo" class="btn-reset">Usar mi ubicación</button>
     <span id="geo-estado" class="geo-estado"></span>
-    <label>electricidad <input type="number" id="s-kwh" step="5"> $/kWh</label>
+    <label>electricidad <input type="number" id="s-kwh" step="5"> $/kWh <span id="lbl-kwh" class="geo-estado"></span></label>
+    <label class="switch"><input type="checkbox" id="t-casa"> <span>Cargo en casa</span></label>
     <label>base de cálculo
       <select id="s-base">
         <option value="mixto">ciclo mixto</option>
@@ -114,6 +115,7 @@
     <li id="nota-precio"></li>
     <li id="nota-costo"></li>
     <li id="nota-bencina"></li>
+    <li id="nota-carga"></li>
     <li id="nota-espacio"></li>
     <li id="nota-marca"></li>
     <li id="nota-alcance"></li>

@@ -12,16 +12,18 @@ window.AUTOS_DATA = {
     "notaRendimiento": "Ojo: las cifras de ciudad homologadas en Chile (ciclo local) son mucho más optimistas que las WLTP. El 40,1 km/l del Kona y el 43,5 km/l del MG NO son comparables con el 25,6 km/l que declara Toyota. La columna 'mixto' indica su ciclo de origen.",
     "supuestos": {
       "precioBencina93": 1433,
-      "precioKwh": 160,
-      "depreciacionAnual": 0.12
+      "depreciacionAnual": 0.12,
+      "precioKwhResidencial": 160,
+      "precioKwhPublico": 315,
+      "cargadorEnCasaDefault": false
     },
     "notaOrigen": "La columna \"Origen marca\" permite filtrar por procedencia. Ojo: el país de la marca no es el de fabricación — el Kia EV5 es coreano de marca pero se fabrica en China, y el Corolla Cross es japonés de marca pero viene de Brasil. La columna \"Origen\" del detalle indica dónde se fabrica.",
     "notaAlcance": "La tabla ya no es solo de SUV: incluye hatchback y sedán híbridos, que suelen ser más baratos y eficientes por el mismo tren motriz. Filtra por Carrocería si quieres volver a ver solo SUV.",
     "score": {
-      "descripcion": "Puntaje 0-100 compuesto por cinco criterios. Los pesos por defecto siguen el orden de importancia declarado: rendimiento 30, precio 25, marca 20, espacio 15 y facilidad de estacionar 10. Son ajustables en la página con los sliders.",
+      "descripcion": "Puntaje 0-100 compuesto por cinco criterios. Pesos por defecto: precio 30, costo por 100 km 25, marca 20, espacio 15 y facilidad de estacionar 10. Ajustables con los sliders.",
       "pesos": {
-        "costo": 30,
-        "precio": 25,
+        "costo": 25,
+        "precio": 30,
         "marca": 20,
         "espacio": 15,
         "tamano": 10
@@ -60,7 +62,8 @@ window.AUTOS_DATA = {
       },
       "factorCiudadEV": 0.9,
       "baseCostoDefault": "mixto",
-      "notaCosto": "Costo por 100 km: es el criterio de operación del score. Convierte consumo en plata, que es lo único comparable entre un híbrido y un eléctrico (km/l y kWh/100 km no se comparan entre sí). Puedes elegir la base de cálculo — ciclo mixto o ciclo ciudad — junto a los precios de bencina y kWh. Donde falta la cifra de un ciclo se deriva del otro: ×1,15 de mixto a ciudad en híbridos full (regeneran en cada frenada), ×0,95 en mild hybrid y enchufables. Los valores derivados van marcados \"der.\" en la tabla. Ojo: cuando la base es ciudad, el criterio favorece a las marcas que homologan más agresivo en Chile (Hyundai declara 40,1 km/l urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo). En ciclo mixto esa distorsión es bastante menor."
+      "notaCosto": "Costo por 100 km: es el criterio de operación del score. Convierte consumo en plata, que es lo único comparable entre un híbrido y un eléctrico (km/l y kWh/100 km no se comparan entre sí). Puedes elegir la base de cálculo — ciclo mixto o ciclo ciudad — junto a los precios de bencina y kWh. Donde falta la cifra de un ciclo se deriva del otro: ×1,15 de mixto a ciudad en híbridos full (regeneran en cada frenada), ×0,95 en mild hybrid y enchufables. Los valores derivados van marcados \"der.\" en la tabla. Ojo: cuando la base es ciudad, el criterio favorece a las marcas que homologan más agresivo en Chile (Hyundai declara 40,1 km/l urbanos y Toyota 25,6 para autos que en pruebas independientes rinden casi lo mismo). En ciclo mixto esa distorsión es bastante menor.",
+      "factorPhevSinCarga": 0.8
     },
     "bencina": {
       "precioDefault": 1433,
@@ -71,7 +74,8 @@ window.AUTOS_DATA = {
       "geocoder": "https://nominatim.openstreetmap.org/reverse",
       "nota": "El precio por defecto es el de la Shell de Carlos Antúnez 2490 en Providencia para 93 octanos. Con el botón \"usar mi ubicación\" la página pide tu posición, resuelve la comuna y trae los precios reales de 93 de esa comuna desde bencinaenlinea.cl (CNE), usando la mediana de las estaciones. Nada de eso sale del navegador: no hay servidor propio ni se guarda tu ubicación."
     },
-    "notaPrecio": "La columna Precio muestra el precio más barato publicado por la marca — normalmente el que exige financiamiento propio o bonos. El tooltip trae el precio de lista cuando la marca publica ambos. Donde solo hay un precio, los dos coinciden."
+    "notaPrecio": "La columna Precio muestra el precio más barato publicado por la marca — normalmente el que exige financiamiento propio o bonos. El tooltip trae el precio de lista cuando la marca publica ambos. Donde solo hay un precio, los dos coinciden.",
+    "notaCarga": "Sin cargador en casa, un eléctrico se carga en red pública, que en Chile cuesta entre $200 y $400 por kWh (Enel X Way $315, Copec Voltex ~$200) contra unos $160 de la tarifa residencial. Por eso el interruptor \"cargo en casa\" no es cosmético: cambia el precio del kWh con que se calcula el costo por 100 km y prácticamente duplica el de los eléctricos. Con el interruptor apagado, además, los enchufables (PHEV) se penalizan un 20% en rendimiento, porque sin cargarlos andan casi siempre a bencina."
   },
   "autos": [
     {

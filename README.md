@@ -68,8 +68,8 @@ cada auto aparece en su panel de detalle. Están ordenados por importancia:
 
 | Peso | Criterio | Cómo se calcula |
 |---:|---|---|
-| **30** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
-| **25** | **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
+| **30** | **Precio** | El precio más barato publicado de esa versión. El más barato del set puntúa 100 |
+| **25** | **Costo por 100 km** | Costo de energía por 100 km — comparable entre híbrido y eléctrico. El más barato puntúa 100. Base seleccionable: ciclo mixto (default) o ciudad |
 | **20** | **Marca** | Toyota y Lexus 100 · resto japonesas 88 · Hyundai 82 · Tesla 80 · Kia 68 · chinas 30 |
 | **15** | **Espacio interior** | Proxy: altura del vehículo (55%) + distancia entre ejes (45%), normalizados contra el rango de la tabla |
 | **10** | **Tamaño / estacionar** | Cuánto se pasa de la huella de un **auto de referencia** (4.325 × 1.790 mm, un SUV subcompacto). Igual o más chico = 100 |
@@ -115,6 +115,20 @@ Los factores están en `data/autos.js` → `meta.score.factorCiudad`.
    para casi ningún modelo en Chile. Sirve para descartar, no para decidir — sobre todo si eres
    alto. Antes de comprar, siéntate en los finalistas con el asiento abajo y atrás del todo, y ojo
    con el techo panorámico: descuenta ~3 cm.
+
+## Cargador en casa
+
+El interruptor **Cargo en casa** no es cosmético: decide a qué tarifa se cobra la electricidad
+y cambia bastante el ranking.
+
+| | $/kWh | Efecto |
+|---|---:|---|
+| Con cargador en casa | 160 | Tarifa residencial |
+| **Sin cargador (default)** | **315** | Red pública — Enel X Way $315, Copec Voltex ~$200, rango de mercado $200-400 |
+
+Con el interruptor apagado, un eléctrico pasa de ~$2.200 a ~$4.400 por 100 km, y los
+**enchufables (PHEV) se penalizan además un 20% en rendimiento**, porque sin cargarlos andan
+casi siempre a bencina. El factor está en `meta.score.factorPhevSinCarga`.
 
 ## Precio de la bencina
 
