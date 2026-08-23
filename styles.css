@@ -4,6 +4,7 @@
   --surface-2: #f0efec;
   --border: #dedbd4;
   --border-strong: #c5c1b8;
+  --border-ui: #8b8a85;   /* 3:1 sobre los fondos claros: bordes de controles */
   --text: #1b1a17;
   --text-dim: #6b6862;
   --accent: #2f6f4e;
@@ -13,17 +14,21 @@
   --nuevo: #2f6f4e;
   --radius: 8px;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  /* hace que checkbox, select y scrollbars nativos sigan el tema */
+  color-scheme: light;
 }
 
 /* Tema: por defecto sigue al sistema. El selector de la página escribe
    data-theme="claro" u "oscuro" en <html> y manda sobre la preferencia del sistema. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="claro"]) {
+    color-scheme: dark;
     --bg: #16161a;
     --surface: #1e1e23;
     --surface-2: #26262c;
     --border: #33333b;
     --border-strong: #47474f;
+    --border-ui: #707070;  /* 3:1 sobre los fondos oscuros */
     --text: #ecebe8;
     --text-dim: #9b9890;
     --accent: #6dc396;
@@ -35,11 +40,13 @@
 }
 
 :root[data-theme="oscuro"] {
+  color-scheme: dark;
   --bg: #16161a;
     --surface: #1e1e23;
     --surface-2: #26262c;
     --border: #33333b;
     --border-strong: #47474f;
+    --border-ui: #707070;  /* 3:1 sobre los fondos oscuros */
     --text: #ecebe8;
     --text-dim: #9b9890;
     --accent: #6dc396;
@@ -61,6 +68,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:root[data-theme="claro"] { color-scheme: light; }
+
 /* ---------- header ---------- */
 .head {
   display: flex;
@@ -78,13 +87,14 @@ body {
 
 .tema { display: flex; align-items: center; gap: .3rem; }
 .tema select {
-  padding: .15rem .3rem;
-  border: 1px solid var(--border-strong);
+  padding: .4rem .5rem;
+  min-height: 38px;
+  border: 1px solid var(--border-ui);
   border-radius: 5px;
   background: var(--surface);
   color: var(--text);
   font: inherit;
-  font-size: .78rem;
+  font-size: .82rem;
 }
 
 /* ---------- filtros ---------- */
@@ -99,7 +109,7 @@ body {
 .f-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; }
 .f-label {
   display: block;
-  font-size: .68rem;
+  font-size: .74rem;
   text-transform: uppercase;
   letter-spacing: .06em;
   color: var(--text-dim);
@@ -111,12 +121,13 @@ body {
 .chips { display: flex; flex-wrap: wrap; gap: .3rem; max-width: 100%; }
 
 .chip {
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-ui);
   background: var(--surface);
   color: var(--text);
   border-radius: 100px;
-  padding: .22rem .65rem;
-  font-size: .8rem;
+  padding: .4rem .8rem;
+  min-height: 34px;
+  font-size: .84rem;
   cursor: pointer;
   font-family: inherit;
   transition: background .12s, border-color .12s;
@@ -139,21 +150,54 @@ body {
 
 .f-search input {
   width: 15rem;
-  padding: .4rem .6rem;
-  border: 1px solid var(--border-strong);
+  padding: .5rem .7rem;
+  min-height: 40px;
+  border: 1px solid var(--border-ui);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
   font: inherit;
   font-size: .85rem;
 }
-.f-search input:focus-visible, .chip:focus-visible, input:focus-visible, button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+/* Foco visible en todo control interactivo, con doble anillo para que se vea
+   sobre cualquier fondo (WCAG 2.4.11). */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .f-range { display: block; }
-.f-range input[type=range] { width: 10rem; display: block; accent-color: var(--accent); }
+.f-range input[type=range] { width: 11rem; display: block; }
+
+/* Los sliders traen su propia área táctil de 44px sin engordar la fila. */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 44px;
+  margin: -12px 0;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-ui);
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--border-ui);
+}
+input[type=range]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--border-ui); }
+input[type=range]::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--surface);
+}
 .f-range output {
   display: block;
   font-size: .78rem;
@@ -164,26 +208,31 @@ body {
 }
 
 .f-toggles { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-.switch { display: flex; align-items: center; gap: .35rem; font-size: .82rem; cursor: pointer; }
-.switch input { accent-color: var(--accent); }
+.switch {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .86rem; cursor: pointer;
+  min-height: 44px; padding: 0 .2rem;
+}
+.switch input { accent-color: var(--accent); width: 24px; height: 24px; flex: 0 0 auto; cursor: pointer; }
 .btn-reset {
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-ui);
   background: var(--surface);
-  color: var(--text-dim);
+  color: var(--text);
   border-radius: var(--radius);
-  padding: .3rem .7rem;
+  padding: .5rem .9rem;
+  min-height: 40px;
   font: inherit;
-  font-size: .8rem;
+  font-size: .84rem;
   cursor: pointer;
 }
-.btn-reset:hover { color: var(--text); border-color: var(--accent); }
+.btn-reset:hover { border-color: var(--accent); background: var(--accent-soft); }
 
 /* pesos del score */
 .f-pesos { align-items: center; gap: .8rem; }
 .f-pesos .f-label { margin: 0; }
 .pesos { display: flex; flex-wrap: wrap; gap: 1rem; }
-.peso { display: flex; align-items: center; gap: .35rem; font-size: .78rem; color: var(--text-dim); }
-.peso input[type=range] { width: 5.5rem; accent-color: var(--accent); }
+.peso { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--text); min-height: 44px; }
+.peso input[type=range] { width: 7rem; }
 .peso output {
   font-family: var(--mono);
   font-size: .75rem;
@@ -227,7 +276,7 @@ body {
   margin-left: .1em;
 }
 
-.geo-estado { font-size: .72rem; color: var(--text-dim); }
+.geo-estado { font-size: .78rem; color: var(--text-dim); }
 .geo-estado.error { color: var(--warn); }
 
 /* desglose del score en el detalle */
@@ -251,26 +300,28 @@ body {
 .dg-val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
 .dg-peso { text-align: right; color: var(--text-dim); font-family: var(--mono); font-size: .9em; }
 
-.f-supuestos { font-size: .8rem; color: var(--text-dim); align-items: center; gap: .8rem; }
+.f-supuestos { font-size: .84rem; color: var(--text-dim); align-items: center; gap: .8rem; }
 .f-supuestos label { display: flex; align-items: center; gap: .3rem; }
 .f-supuestos select {
-  padding: .2rem .3rem;
-  border: 1px solid var(--border-strong);
+  padding: .45rem .5rem;
+  min-height: 40px;
+  border: 1px solid var(--border-ui);
   border-radius: 5px;
   background: var(--surface);
   color: var(--text);
   font: inherit;
-  font-size: .8rem;
+  font-size: .84rem;
 }
-.f-supuestos input {
-  width: 5.5rem;
-  padding: .2rem .4rem;
-  border: 1px solid var(--border-strong);
+.f-supuestos input[type=number] {
+  width: 6rem;
+  padding: .45rem .5rem;
+  min-height: 40px;
+  border: 1px solid var(--border-ui);
   border-radius: 5px;
   background: var(--surface);
   color: var(--text);
   font: inherit;
-  font-size: .8rem;
+  font-size: .84rem;
   font-variant-numeric: tabular-nums;
 }
 .f-supuestos .f-label { margin: 0; }
@@ -292,12 +343,20 @@ thead th {
   text-transform: uppercase;
   letter-spacing: .04em;
   color: var(--text-dim);
-  cursor: pointer;
   user-select: none;
   font-weight: 600;
 }
 thead th:nth-child(2) { text-align: left; }
 thead th:hover { color: var(--text); }
+/* el botón hereda la celda: el encabezado se ve igual pero es operable con teclado */
+.th-btn {
+  all: unset;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  text-align: inherit;
+}
+.th-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: -2px; }
 thead th .dir { color: var(--accent); font-size: .8em; margin-left: .15em; }
 thead th .u { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; opacity: .7; font-size: .92em; }
 
@@ -403,9 +462,9 @@ tbody tr.sel td { background: var(--accent-soft); }
   .f-row-ranges { flex-direction: row; flex-wrap: wrap; }
   .f-range { flex: 1 1 45%; }
   .f-range input[type=range] { width: 100%; }
-  .pesos { gap: .5rem 1rem; }
-  .peso { flex: 1 1 45%; }
-  .peso input[type=range] { width: 100%; flex: 1; }
+  .pesos { gap: .3rem 1rem; }
+  .peso { flex: 1 1 100%; }
+  .peso input[type=range] { width: auto; flex: 1; min-width: 6rem; }
   .f-supuestos { flex-direction: column; align-items: flex-start; gap: .5rem; }
   .f-toggles { width: 100%; }
 
@@ -422,7 +481,163 @@ tbody tr.sel td { background: var(--accent-soft); }
   .nota-metodo { padding-left: 0; padding-right: 0; }
 }
 
-@media (max-width: 420px) {
-  .chips { gap: .25rem; }
-  .chip { padding: .18rem .5rem; font-size: .74rem; }
+/* En pantalla táctil todo control llega a 44px y el texto a 16px, que además
+   evita el zoom automático de iOS al enfocar un campo. */
+@media (pointer: coarse), (max-width: 640px) {
+  .chip { min-height: 44px; padding: .55rem .9rem; font-size: .88rem; }
+  .btn-reset, .f-supuestos select, .f-supuestos input, .tema select { min-height: 44px; font-size: 16px; }
+  .f-search input { min-height: 44px; font-size: 16px; }
+  .chips { gap: .4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- búsqueda por facetas ---------- */
+.chip .cuenta {
+  margin-left: .4rem;
+  font-size: .78em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.chip[aria-pressed="true"] .cuenta { color: inherit; opacity: .8; }
+.chip-vacio { opacity: .4; cursor: not-allowed; }
+.chip-vacio .cuenta { opacity: .7; }
+
+/* barra de filtros aplicados */
+.aplicados {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem;
+  padding: .7rem 1.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.ap-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-right: .2rem;
+}
+.ap-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 34px;
+  padding: .3rem .7rem;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  border-radius: 100px;
+  font: inherit;
+  font-size: .82rem;
+  cursor: pointer;
+}
+.ap-chip:hover { border-color: var(--text); }
+.ap-chip span { font-size: 1.1em; line-height: 1; opacity: .7; }
+.ap-veto { border-color: var(--warn); background: transparent; color: var(--warn); }
+.ap-limpiar {
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: .82rem;
+  text-decoration: underline;
+  cursor: pointer;
+  min-height: 34px;
+  padding: 0 .4rem;
+}
+
+/* barra móvil y panel de filtros */
+.barra-movil { display: none; }
+.dlg-filtros { display: none; }   /* solo se muestra con el atributo [open] */
+
+@media (max-width: 640px) {
+  .barra-movil {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    padding: .6rem .9rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .btn-filtros {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    min-height: 44px;
+    padding: .5rem 1.1rem;
+    border: 1px solid var(--border-ui);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px; height: 22px;
+    border-radius: 11px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: .75rem;
+    font-weight: 700;
+  }
+  .conteo-resultados { font-size: .85rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+  /* la sección de filtros solo existe dentro del panel */
+  .filtros { border: 0; background: var(--surface); }
+
+  .dlg-filtros[open] {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .dlg-filtros::backdrop { background: rgba(0,0,0,.5); }
+  .dlg-head, .dlg-pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    padding: .8rem .9rem;
+    background: var(--surface);
+  }
+  .dlg-head { border-bottom: 1px solid var(--border); font-size: 1.05rem; }
+  .dlg-pie { border-top: 1px solid var(--border); position: sticky; bottom: 0; }
+  .dlg-cuerpo { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .btn-aplicar .conteo-resultados { color: inherit; }
+  .btn-aplicar {
+    flex: 1;
+    min-height: 48px;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: var(--bg);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .aplicados { padding: .6rem .9rem; }
 }

@@ -399,25 +399,34 @@
   }
 
   /* ---------- filtrado + orden ---------- */
-  function filtrar() {
+  /* Filtrado con exclusión de una faceta.
+     En búsqueda por facetas los contadores de un grupo se calculan aplicando TODOS
+     los filtros menos el de ese propio grupo. Si no, al elegir "Toyota" el resto de
+     las marcas marcaría 0 y no podrías cambiar de opinión sin limpiar. */
+  function pasa(c, excepto) {
+    if (state.marcasVetadas.has(c.marca)) return false;
+    if (excepto !== 'origen' && state.origenes.size && !state.origenes.has(c.paisMarca)) return false;
+    if (excepto !== 'marca' && state.marcas.size && !state.marcas.has(c.marca)) return false;
+    if (excepto !== 'tipo' && state.tipos.size && !state.tipos.has(c.tipo)) return false;
+    if (excepto !== 'carroceria' && state.carrocerias.size && !state.carrocerias.has(c.carroceria)) return false;
+    if (state.precioMax != null && precioEfectivo(c) > state.precioMax) return false;
+    if (state.largoMax != null && c.dim.largo > state.largoMax) return false;
+    if (state.maleteroMin > 0 && (c.dim.maletero ?? 0) < state.maleteroMin) return false;
+    if (state.kmlMin > 0 && (c.rend.mixto ?? -1) < state.kmlMin) return false;
     const q = state.q.trim().toLowerCase();
-    return AUTOS.filter(c => {
-      if (state.origenes.size && !state.origenes.has(c.paisMarca)) return false;
-      if (state.marcasVetadas.has(c.marca)) return false;   // veto: fuera de la tabla, sin importar el score
-      if (state.marcas.size && !state.marcas.has(c.marca)) return false;
-      if (state.tipos.size && !state.tipos.has(c.tipo)) return false;
-      if (state.carrocerias.size && !state.carrocerias.has(c.carroceria)) return false;
-      if (state.precioMax != null && precioEfectivo(c) > state.precioMax) return false;
-      if (state.largoMax != null && c.dim.largo > state.largoMax) return false;
-      if (state.maleteroMin > 0 && (c.dim.maletero ?? 0) < state.maleteroMin) return false;
-      if (state.kmlMin > 0 && (c.rend.mixto ?? -1) < state.kmlMin) return false;
-      if (q) {
-        const heno = `${c.marca} ${c.modelo} ${c.version} ${c.tipo} ${c.carroceria} ${c.notas || ''}`.toLowerCase();
-        if (!heno.includes(q)) return false;
-      }
-      return true;
-    });
+    if (q) {
+      const heno = `${c.marca} ${c.modelo} ${c.version} ${c.tipo} ${c.carroceria} ${c.notas || ''}`.toLowerCase();
+      if (!heno.includes(q)) return false;
+    }
+    return true;
   }
+
+  // Cuántos autos quedarían si además se marcara este valor del grupo.
+  function contarFaceta(grupo, campo, valor) {
+    return AUTOS.filter(c => c[campo] === valor && pasa(c, grupo)).length;
+  }
+
+  const filtrar = () => AUTOS.filter(c => pasa(c, null));
 
   function ordenar(lista) {
     const col = COLS.find(c => c.key === state.sortKey) || COLS[0];
@@ -439,9 +448,14 @@
       const dir = activa ? `<span class="dir">${state.sortDir === 1 ? '▲' : '▼'}</span>` : '';
       const sortable = c.tipo !== 'nosort';
       const unidad = typeof c.unidad === 'function' ? c.unidad() : c.unidad;
-      return `<th data-key="${c.key}" class="p${c.prioridad || 1}" ${sortable ? '' : 'data-nosort="1" style="cursor:default"'}
-        ${activa ? `aria-sort="${state.sortDir === 1 ? 'ascending' : 'descending'}"` : ''}
-        title="${sortable ? 'Ordenar por ' + esc(c.label) : ''}">${esc(c.label)}${dir}${unidad ? `<span class="u">${esc(unidad)}</span>` : ''}</th>`;
+      const interior = `${esc(c.label)}${dir}${unidad ? `<span class="u">${esc(unidad)}</span>` : ''}`;
+      // los ordenables van dentro de un <button> para poder usarlos con teclado
+      const contenido = sortable
+        ? `<button type="button" class="th-btn" data-key="${c.key}"
+             aria-label="Ordenar por ${esc(c.label)}${activa ? (state.sortDir === 1 ? ', ascendente' : ', descendente') : ''}">${interior}</button>`
+        : interior;
+      return `<th data-key="${c.key}" class="p${c.prioridad || 1}" ${sortable ? '' : 'data-nosort="1"'}
+        scope="col" ${activa ? `aria-sort="${state.sortDir === 1 ? 'ascending' : 'descending'}"` : ''}>${contenido}</th>`;
     }).join('');
   }
 
@@ -456,6 +470,8 @@
     document.getElementById('vacio').hidden = lista.length > 0;
     document.getElementById('meta-count').textContent =
       `${lista.length} de ${AUTOS.length} modelos`;
+    pintarFacetas();
+    pintarResumen(lista.length);
   }
 
   /* ---------- gráfico de precios ---------- */
@@ -656,7 +672,8 @@
     document.getElementById('pesos').innerHTML = CRITERIOS.map(cr => `
       <label class="peso">
         <span>${esc(cr.label)}</span>
-        <input type="range" min="0" max="50" step="5" value="${state.pesos[cr.key]}" data-k="${cr.key}">
+        <input type="range" min="0" max="50" step="5" value="${state.pesos[cr.key]}" data-k="${cr.key}"
+               aria-valuetext="peso ${state.pesos[cr.key]} de 50">
         <output>${state.pesos[cr.key]}</output>
       </label>`).join('');
   }
@@ -668,6 +685,7 @@
       if (!inp) return;
       state.pesos[inp.dataset.k] = +inp.value;
       inp.nextElementSibling.textContent = inp.value;
+      inp.setAttribute('aria-valuetext', `peso ${inp.value} de 50`);
       renderBody();
       renderDetalle();
     });
@@ -677,15 +695,63 @@
     });
   }
 
+  /* ---------- filtros aplicados ----------
+     Barra con cada filtro activo como ficha removible, igual que en Amazon o
+     MercadoLibre: siempre se ve qué está acotando el resultado y se quita de a uno. */
+  function filtrosActivos() {
+    const f = [];
+    if (state.q.trim()) f.push({ t: `“${state.q.trim()}”`, quitar: () => { state.q = ''; document.getElementById('q').value = ''; } });
+    for (const [set, etq] of [[state.origenes, 'Origen'], [state.marcas, 'Marca'], [state.tipos, 'Tipo'], [state.carrocerias, 'Carrocería']])
+      for (const v of set) f.push({ t: `${etq}: ${v}`, quitar: () => set.delete(v) });
+    for (const v of state.marcasVetadas) f.push({ t: `Sin ${v}`, veto: true, quitar: () => state.marcasVetadas.delete(v) });
+    const rango = (id, key, activo, texto) => {
+      const inp = document.getElementById(id);
+      if (activo) f.push({ t: texto, quitar: () => { inp.value = inp.dataset.reset; inp.dispatchEvent(new Event('input')); } });
+    };
+    rango('r-precio', 'precioMax', state.precioMax < +document.getElementById('r-precio').max, `Hasta ${clpM(state.precioMax)}`);
+    rango('r-kml', 'kmlMin', state.kmlMin > 0, `Desde ${num(state.kmlMin)} km/l`);
+    rango('r-largo', 'largoMax', state.largoMax < +document.getElementById('r-largo').max, `Largo ≤ ${state.largoMax} mm`);
+    rango('r-maletero', 'maleteroMin', state.maleteroMin > 0, `Maletero ≥ ${state.maleteroMin} L`);
+    return f;
+  }
+
+  let ACTIVOS = [];
+  function pintarResumen(n) {
+    ACTIVOS = filtrosActivos();
+    const cont = document.getElementById('aplicados');
+    cont.innerHTML = ACTIVOS.length
+      ? `<span class="ap-label">Filtros aplicados</span>`
+        + ACTIVOS.map((f, i) => `<button type="button" class="ap-chip${f.veto ? ' ap-veto' : ''}" data-i="${i}"`
+            + ` aria-label="Quitar filtro ${esc(f.t)}">${esc(f.t)}<span aria-hidden="true">×</span></button>`).join('')
+        + `<button type="button" class="ap-limpiar" id="ap-limpiar">Limpiar todo</button>`
+      : '';
+    cont.hidden = ACTIVOS.length === 0;
+    document.querySelectorAll('.conteo-resultados').forEach(e => {
+      e.textContent = n === AUTOS.length ? `${n} autos` : `${n} de ${AUTOS.length} autos`;
+    });
+    const badge = document.getElementById('badge-filtros');
+    if (badge) { badge.textContent = ACTIVOS.length || ''; badge.hidden = ACTIVOS.length === 0; }
+  }
+
   /* ---------- chips ---------- */
-  function pintarChips(contId, valores, set, vetadas) {
+  let GRUPOS = [];
+  const pintarFacetas = () => GRUPOS.forEach(([id, vals, set, vetadas, grupo, campo]) =>
+    pintarChips(id, vals, set, vetadas, grupo, campo));
+  function pintarChips(contId, valores, set, vetadas, grupo, campo) {
     document.getElementById(contId).innerHTML = valores.map(v => {
       const veto = vetadas && vetadas.has(v);
       const on = set.has(v);
+      const n = contarFaceta(grupo, campo, v);
+      const vacio = n === 0 && !on && !veto;
       const titulo = veto ? 'Descartada: no aparece en la tabla'
-        : (vetadas ? 'Clic para filtrar · otro clic para descartarla' : '');
-      return `<button type="button" class="chip${veto ? ' chip-veto' : ''}" data-v="${esc(v)}"`
-        + ` aria-pressed="${on}"${titulo ? ` title="${titulo}"` : ''}>${esc(v)}</button>`;
+        : vacio ? 'Ninguna opción con los filtros actuales'
+        : (vetadas ? 'Clic para filtrar · otro clic para descartarla' : `${n} con los filtros actuales`);
+      const etiqueta = veto ? `${v}, descartada`
+        : `${v}, ${n} ${n === 1 ? 'resultado' : 'resultados'}${on ? ', filtrando' : ''}`;
+      return `<button type="button" class="chip${veto ? ' chip-veto' : ''}${vacio ? ' chip-vacio' : ''}"`
+        + ` data-v="${esc(v)}" aria-pressed="${on}" aria-label="${esc(etiqueta)}"`
+        + `${vacio ? ' disabled' : ''} title="${esc(titulo)}">`
+        + `${esc(v)}<span class="cuenta">${n}</span></button>`;
     }).join('');
   }
 
@@ -694,29 +760,29 @@
     /* El grupo de marcas es de tres estados: neutro -> filtrar -> descartar.
        Un peso alto no alcanza para expresar "esta marca no la compro ni gratis";
        el veto la saca de la tabla sin importar cuánto puntúe. */
-    const grupos = [
-      ['chips-origen', uniq(c => c.paisMarca), state.origenes, null],
-      ['chips-marca', uniq(c => c.marca), state.marcas, state.marcasVetadas],
-      ['chips-tipo', uniq(c => c.tipo), state.tipos, null],
-      ['chips-carroceria', uniq(c => c.carroceria), state.carrocerias, null]
+    GRUPOS = [
+      ['chips-origen', uniq(c => c.paisMarca), state.origenes, null, 'origen', 'paisMarca'],
+      ['chips-marca', uniq(c => c.marca), state.marcas, state.marcasVetadas, 'marca', 'marca'],
+      ['chips-tipo', uniq(c => c.tipo), state.tipos, null, 'tipo', 'tipo'],
+      ['chips-carroceria', uniq(c => c.carroceria), state.carrocerias, null, 'carroceria', 'carroceria']
     ];
-    grupos.forEach(([id, vals, set, vetadas]) => {
-      pintarChips(id, vals, set, vetadas);
+    GRUPOS.forEach(g => {
+      const [id, vals, set, vetadas] = g;
       document.getElementById(id).addEventListener('click', e => {
         const b = e.target.closest('.chip');
-        if (!b) return;
+        if (!b || b.disabled) return;
         const v = b.dataset.v;
         if (vetadas) {
-          if (vetadas.has(v)) vetadas.delete(v);          // descartada -> neutro
+          if (vetadas.has(v)) vetadas.delete(v);                   // descartada -> neutro
           else if (set.has(v)) { set.delete(v); vetadas.add(v); }  // filtrada -> descartada
-          else set.add(v);                                 // neutro -> filtrada
+          else set.add(v);                                         // neutro -> filtrada
         } else {
           set.has(v) ? set.delete(v) : set.add(v);
         }
-        pintarChips(id, vals, set, vetadas);
-        renderBody();
+        renderBody();   // repinta las cuatro facetas: los contadores dependen entre sí
       });
     });
+    pintarFacetas();
   }
 
   /* ---------- rangos ---------- */
@@ -746,9 +812,13 @@
       const inp = document.getElementById(id), out = document.getElementById(outId);
       const upd = () => {
         state[key] = +inp.value;
-        out.textContent = fmt(+inp.value, inp);
+        const texto = fmt(+inp.value, inp);
+        out.textContent = texto;
+        // sin esto un lector de pantalla lee "15000000" en vez de "hasta $15.000.000"
+        inp.setAttribute('aria-valuetext', texto);
         renderBody();
       };
+      inp.dataset.reset = inp.value;
       inp.addEventListener('input', upd);
       upd();
     };
@@ -761,6 +831,31 @@
   /* ---------- eventos ---------- */
   function initEventos() {
     document.getElementById('q').addEventListener('input', e => { state.q = e.target.value; renderBody(); });
+
+    document.getElementById('aplicados').addEventListener('click', e => {
+      const b = e.target.closest('.ap-chip');
+      if (b) { ACTIVOS[+b.dataset.i].quitar(); renderBody(); return; }
+      if (e.target.closest('#ap-limpiar')) document.getElementById('reset').click();
+    });
+
+    /* Panel de filtros en móvil: <dialog> nativo, que ya trae foco atrapado,
+       cierre con Esc y fondo inerte. La sección de filtros se mueve dentro y
+       vuelve a su lugar al pasar a escritorio. */
+    const dlg = document.getElementById('dlg-filtros');
+    const filtros = document.querySelector('.filtros');
+    const ancla = document.getElementById('ancla-filtros');
+    const mq = matchMedia('(max-width: 640px)');
+    const acomodar = () => {
+      if (mq.matches) document.getElementById('slot-filtros').appendChild(filtros);
+      else { ancla.after(filtros); if (dlg.open) dlg.close(); }
+    };
+    mq.addEventListener('change', acomodar);
+    acomodar();
+
+    document.getElementById('btn-filtros').addEventListener('click', () => dlg.showModal());
+    document.getElementById('cerrar-filtros').addEventListener('click', () => dlg.close());
+    document.getElementById('aplicar-filtros').addEventListener('click', () => dlg.close());
+    document.getElementById('limpiar-movil').addEventListener('click', () => document.getElementById('reset').click());
 
     document.getElementById('thead-row').addEventListener('click', e => {
       const th = e.target.closest('th');
@@ -823,7 +918,6 @@
       state.tipos.clear(); state.carrocerias.clear();
       ['r-precio', 'r-largo'].forEach(id => { const i = document.getElementById(id); i.value = i.max; i.dispatchEvent(new Event('input')); });
       ['r-kml', 'r-maletero'].forEach(id => { const i = document.getElementById(id); i.value = i.min; i.dispatchEvent(new Event('input')); });
-      initChips();
       renderBody();
     });
   }

@@ -26,11 +26,20 @@
   </div>
 </header>
 
-<section class="filtros" aria-label="Filtros">
+<div class="barra-movil">
+  <button type="button" id="btn-filtros" class="btn-filtros" aria-haspopup="dialog" aria-controls="dlg-filtros">
+    Filtros <span id="badge-filtros" class="badge" hidden></span>
+  </button>
+  <span class="conteo-resultados"></span>
+</div>
+
+<div id="ancla-filtros"></div>
+
+<section class="filtros" aria-label="Filtros y configuración del score">
   <div class="f-row">
     <label class="f-search">
       <span class="f-label">Buscar</span>
-      <input type="search" id="q" placeholder="modelo, versión, nota…" autocomplete="off">
+      <input type="search" id="q" placeholder="modelo, versión, nota…" autocomplete="off" aria-label="Buscar por modelo, versión o nota">
     </label>
 
     <fieldset class="f-chips">
@@ -92,7 +101,7 @@
     <span class="f-label">Supuestos para el costo por 100 km:</span>
     <label>bencina 93 <input type="number" id="s-bencina" step="10"> $/L</label>
     <button type="button" id="btn-geo" class="btn-reset">Usar mi ubicación</button>
-    <span id="geo-estado" class="geo-estado"></span>
+    <span id="geo-estado" class="geo-estado" role="status" aria-live="polite"></span>
     <label>electricidad <input type="number" id="s-kwh" step="5"> $/kWh <span id="lbl-kwh" class="geo-estado"></span></label>
     <label class="switch"><input type="checkbox" id="t-casa"> <span>Cargo en casa</span></label>
     <label>base de cálculo
@@ -104,8 +113,22 @@
   </div>
 </section>
 
+<div id="aplicados" class="aplicados" role="region" aria-label="Filtros aplicados" hidden></div>
+
+<dialog id="dlg-filtros" class="dlg-filtros" aria-label="Filtros">
+  <div class="dlg-head">
+    <strong>Filtros</strong>
+    <button type="button" id="cerrar-filtros" class="btn-reset" aria-label="Cerrar filtros">Cerrar</button>
+  </div>
+  <div id="slot-filtros" class="dlg-cuerpo"></div>
+  <div class="dlg-pie">
+    <button type="button" id="limpiar-movil" class="btn-reset">Limpiar</button>
+    <button type="button" id="aplicar-filtros" class="btn-aplicar">Ver <span class="conteo-resultados"></span></button>
+  </div>
+</dialog>
+
 <div class="tabla-wrap">
-  <table id="tabla">
+  <table id="tabla" aria-label="Comparación de autos híbridos y eléctricos">
     <thead><tr id="thead-row"></tr></thead>
     <tbody id="tbody"></tbody>
   </table>

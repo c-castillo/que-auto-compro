@@ -51,8 +51,14 @@ python3 -m http.server 8777   # → http://localhost:8777
 ## Cómo usarla
 
 - **Ordenar**: click en cualquier encabezado. Segundo click invierte. Los "—" quedan siempre al final.
-- **Filtrar**: chips de origen de marca/marca/tipo/carrocería (se acumulan), sliders de precio,
-  km/l, largo y maletero. Para ver solo japoneses y coreanos, marca esos dos chips en *Origen marca*.
+- **Filtrar (búsqueda por facetas)**: cada chip muestra **cuántos autos quedarían** si lo marcas.
+  Los contadores de un grupo se calculan aplicando todos los filtros *menos* el de ese grupo, que es
+  el comportamiento estándar de Amazon o MercadoLibre: al elegir "EV", Toyota pasa de 9 a 2 pero el
+  resto de los tipos sigue mostrando su conteo real. Las opciones que darían cero quedan
+  deshabilitadas. Una barra de **filtros aplicados** lista todo lo activo como fichas removibles.
+- **En móvil** los filtros viven en un panel a pantalla completa que se abre con el botón *Filtros*
+  (con la cuenta de filtros activos), y se cierra con *Ver N autos*. Es un `<dialog>` nativo, así
+  que trae foco atrapado, cierre con Esc y fondo inerte sin código extra.
 - **Descartar una marca**: los chips de *Marca* tienen tres estados. Un clic filtra a esa marca,
   el segundo la **descarta** (queda tachada y sus modelos desaparecen de la tabla sin importar su
   score), el tercero vuelve a neutro. Un peso alto baja a una marca en el ranking; el veto la saca.
@@ -64,6 +70,20 @@ python3 -m http.server 8777   # → http://localhost:8777
   (score, modelo, tipo, precio y costo). Cada columna declara su `prioridad` en `COLS`.
 - **Carrocería** se muestra como silueta — sedán, hatchback o SUV — con la letra del tamaño
   (XS/C/M/G) y `+` si es premium. El nombre completo está en el tooltip.
+
+## Accesibilidad
+
+- Todos los controles llegan a **44×44 px** en pantallas táctiles y a 40 px en escritorio.
+- Los bordes de los controles usan un token propio (`--border-ui`) con **3:1 de contraste**
+  contra los tres fondos, en ambos temas (WCAG 1.4.11). El texto va sobre 4.5:1.
+- Los sliders exponen `aria-valuetext` ("hasta $30,0M", "peso 25 de 50") en vez de dejar que el
+  lector de pantalla lea el número crudo.
+- Los encabezados ordenables son `<button>` dentro del `<th>`, operables con teclado, con
+  `aria-sort` en la celda.
+- Los chips anuncian su estado y su conteo; los descartados dicen "descartada".
+- El estado de la geolocalización es una región `aria-live="polite"`.
+- Foco visible de 3 px en todo elemento interactivo, y `prefers-reduced-motion` respetado.
+- `color-scheme` declarado, para que checkbox, select y scrollbars nativos sigan el tema.
 
 ## El score (0-100)
 
