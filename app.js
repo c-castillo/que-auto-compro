@@ -828,7 +828,24 @@
     });
   }
 
-  /* ---------- arranque ---------- */
+  /* ---------- tema ----------
+     Por defecto sigue al sistema operativo. La elección se guarda en el navegador. */
+  function initTema() {
+    const sel = document.getElementById('s-tema');
+    const guardado = localStorage.getItem('tema') || 'sistema';
+    const aplicar = v => {
+      if (v === 'sistema') delete document.documentElement.dataset.theme;
+      else document.documentElement.dataset.theme = v;
+    };
+    sel.value = guardado;
+    aplicar(guardado);
+    sel.addEventListener('change', () => {
+      localStorage.setItem('tema', sel.value);
+      aplicar(sel.value);
+    });
+  }
+
+  document.getElementById('meta-fecha').textContent = 'datos al ' + DATA.meta.actualizado;
   document.getElementById('meta-fecha').textContent = 'datos al ' + DATA.meta.actualizado;
   document.getElementById('nota-rendimiento').textContent = DATA.meta.notaRendimiento;
   document.getElementById('nota-origen').textContent = DATA.meta.notaOrigen;
@@ -843,6 +860,7 @@
   document.getElementById('nota-espacio').textContent = S.notaEspacio;
   document.getElementById('nota-marca').textContent = S.notaMarca;
   document.getElementById('nota-equipamiento').textContent = S.notaEquipamiento;
+  initTema();
   initChips();
   initRangos();
   initPesos();

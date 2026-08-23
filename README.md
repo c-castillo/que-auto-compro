@@ -43,7 +43,7 @@ python3 -m http.server 8777   # → http://localhost:8777
 | Archivo | Qué hace |
 |---|---|
 | `index.html` | Estructura de la página |
-| `styles.css` | Estilos (se adapta a modo claro/oscuro del sistema) |
+| `styles.css` | Estilos. Tema claro por defecto, oscuro si el sistema lo pide, y selector manual en la cabecera |
 | `app.js` | Filtros, orden, panel de detalle y gráficos |
 | `data/autos.js` | **Fuente de datos única.** Editable a mano |
 | `scripts/add-snapshot.mjs` | Agrega un punto al historial de precios |

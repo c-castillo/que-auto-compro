@@ -15,8 +15,10 @@
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
 }
 
+/* Tema: por defecto sigue al sistema. El selector de la página escribe
+   data-theme="claro" u "oscuro" en <html> y manda sobre la preferencia del sistema. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="claro"]) {
     --bg: #16161a;
     --surface: #1e1e23;
     --surface-2: #26262c;
@@ -30,6 +32,21 @@
     --usado: #a98fe0;
     --nuevo: #6dc396;
   }
+}
+
+:root[data-theme="oscuro"] {
+  --bg: #16161a;
+    --surface: #1e1e23;
+    --surface-2: #26262c;
+    --border: #33333b;
+    --border-strong: #47474f;
+    --text: #ecebe8;
+    --text-dim: #9b9890;
+    --accent: #6dc396;
+    --accent-soft: #21382c;
+    --warn: #d69a4e;
+    --usado: #a98fe0;
+    --nuevo: #6dc396;
 }
 
 * { box-sizing: border-box; }
@@ -57,7 +74,18 @@ body {
 }
 .head h1 { margin: 0 0 .3rem; font-size: 1.5rem; letter-spacing: -.02em; }
 .sub { margin: 0; color: var(--text-dim); max-width: min(62ch, 100%); font-size: .9rem; }
-.head-meta { display: flex; gap: 1rem; font-size: .8rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.head-meta { display: flex; gap: 1rem; align-items: center; font-size: .8rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+.tema { display: flex; align-items: center; gap: .3rem; }
+.tema select {
+  padding: .15rem .3rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .78rem;
+}
 
 /* ---------- filtros ---------- */
 .filtros {
