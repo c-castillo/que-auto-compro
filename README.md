@@ -204,7 +204,8 @@ Correrlo una vez al mes es suficiente para que en medio año tengas curvas reale
 3. **La columna Precio muestra el más barato publicado**, que normalmente exige financiamiento
    de la marca o bonos; va con una `f` volada. El precio de lista está en el tooltip cuando la
    marca publica ambos. Caso típico: el Kona HEV Plus aparece a $23.990.000 con Amicar, y su
-   lista de $27.590.000 sale al pasar el mouse. Hyundai no publica lista para el Tucson.
+   lista de $27.590.000 sale al pasar el mouse. Hyundai ahora sí publica lista para el Tucson
+   (el Plus queda en $31.890.000 de lista y $28.990.000 con Amicar Maestro).
 4. **Dimensiones marcadas con `?`** (Chery Tiggo 4, BYD Song Pro, Kia Sorento, Kia EV5,
    Hyundai Kona Eléctrico, MG3, Suzuki Across) vienen de fichas regionales, no de la ficha chilena.
    Confírmalas antes de decidir por espacio. Del **Suzuki Across** solo hay largo, maletero máximo
@@ -215,4 +216,14 @@ Correrlo una vez al mes es suficiente para que en medio año tengas curvas reale
 6. **El país de la marca no es el de fabricación.** El Kia EV5 es coreano de marca pero se fabrica
    en China; el Corolla Cross es japonés de marca pero viene de Brasil; el Yaris Cross, de Indonesia.
    El filtro *Origen marca* usa la marca; la fila *Origen* del panel de detalle indica la planta.
-7. Precios revisados el **2026-08-21**. Los de Tesla cambian sin aviso.
+7. Precios revisados el **2026-08-30**. Los de Tesla cambian sin aviso.
+8. **Toyota dejó de publicar precios en toyota.cl.** Sus páginas de modelo ahora sólo muestran
+   planes de mantención, así que los precios de la marca salen de concesionarios oficiales
+   (Kovacs) y de prensa. El Yaris Cross XG, el Corolla sedán y el RAV4 LE no se pudieron
+   reconfirmar en la revisión del 30-ago-2026 y conservan el precio del 22-ago.
+9. **El Suzuki Grand Vitara ya no aparece en la gama de suzuki.cl.** La línea quedó en e Vitara,
+   Across, Swift, Fronx y Dzire. Su fila sigue en la tabla con el último precio conocido, pero
+   confirma disponibilidad antes de considerarlo.
+10. **Sin reconfirmar el 30-ago-2026** (conservan su precio anterior): Kia Sportage X-Line,
+   Sorento 2WD y AWD, Niro LX, EV5 Wave, BYD Song Pro DM-i y Haval Jolion HEV Elite. Las tablas
+   de precios de kia.cl se cargan por JavaScript y sólo dejan ver la letra chica de una versión.
