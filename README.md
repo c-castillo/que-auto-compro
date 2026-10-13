@@ -3,7 +3,8 @@
 Tabla comparativa de SUV híbridos y eléctricos disponibles en Chile, filtrable y ordenable
 por marca, dimensiones, rendimiento y precio (con historial).
 
-Datos recopilados en agosto de 2026 desde sitios oficiales de marca en Chile, chileautos.cl y
+Datos recopilados entre agosto y octubre de 2026 desde sitios oficiales de marca en Chile,
+concesionarios oficiales, chileautos.cl y
 prensa especializada. Cada modelo lleva sus fuentes enlazadas en el panel de detalle. El precio de
 la bencina se puede traer en vivo desde bencinaenlinea.cl según tu ubicación.
 
@@ -203,9 +204,9 @@ Correrlo una vez al mes es suficiente para que en medio año tengas curvas reale
    salieron de publicaciones reales de chileautos.
 3. **La columna Precio muestra el más barato publicado**, que normalmente exige financiamiento
    de la marca o bonos; va con una `f` volada. El precio de lista está en el tooltip cuando la
-   marca publica ambos. Caso típico: el Kona HEV Plus aparece a $23.990.000 con Amicar, y su
+   marca publica ambos. Caso típico: el Kona HEV Plus aparece a $24.390.000 con Amicar Maestro, y su
    lista de $27.590.000 sale al pasar el mouse. Hyundai ahora sí publica lista para el Tucson
-   (el Plus queda en $31.890.000 de lista y $28.990.000 con Amicar Maestro).
+   (el Plus queda en $31.890.000 de lista y $29.190.000 con Amicar Maestro).
 4. **Dimensiones marcadas con `?`** (Chery Tiggo 4, BYD Song Pro, Kia Sorento, Kia EV5,
    Hyundai Kona Eléctrico, MG3, Suzuki Across) vienen de fichas regionales, no de la ficha chilena.
    Confírmalas antes de decidir por espacio. Del **Suzuki Across** solo hay largo, maletero máximo
@@ -216,14 +217,25 @@ Correrlo una vez al mes es suficiente para que en medio año tengas curvas reale
 6. **El país de la marca no es el de fabricación.** El Kia EV5 es coreano de marca pero se fabrica
    en China; el Corolla Cross es japonés de marca pero viene de Brasil; el Yaris Cross, de Indonesia.
    El filtro *Origen marca* usa la marca; la fila *Origen* del panel de detalle indica la planta.
-7. Precios revisados el **2026-08-30**. Los de Tesla cambian sin aviso.
-8. **Toyota dejó de publicar precios en toyota.cl.** Sus páginas de modelo ahora sólo muestran
-   planes de mantención, así que los precios de la marca salen de concesionarios oficiales
-   (Kovacs) y de prensa. El Yaris Cross XG, el Corolla sedán y el RAV4 LE no se pudieron
-   reconfirmar en la revisión del 30-ago-2026 y conservan el precio del 22-ago.
-9. **El Suzuki Grand Vitara ya no aparece en la gama de suzuki.cl.** La línea quedó en e Vitara,
-   Across, Swift, Fronx y Dzire. Su fila sigue en la tabla con el último precio conocido, pero
-   confirma disponibilidad antes de considerarlo.
-10. **Sin reconfirmar el 30-ago-2026** (conservan su precio anterior): Kia Sportage X-Line,
-   Sorento 2WD y AWD, Niro LX, EV5 Wave, BYD Song Pro DM-i y Haval Jolion HEV Elite. Las tablas
-   de precios de kia.cl se cargan por JavaScript y sólo dejan ver la letra chica de una versión.
+7. Precios revisados el **2026-10-12** (31 de las 43 filas reconfirmadas contra su fuente).
+   Los de Tesla cambian sin aviso.
+8. **Toyota dejó de publicar precios en toyota.cl**, pero las fichas de Kovacs sí traen la tabla
+   por versión (`kovacstoyota.cl/<segmento>/<modelo>.html` da sólo un "desde"; la ficha con la
+   tabla cuelga de otra URL, p. ej. `/suv/all-new-yaris-cross-2024.html`,
+   `/suv/corolla-cross-hev.html`, `/sedan/ficha-new-corolla-136.html`). Con eso las nueve filas
+   Toyota quedaron reconfirmadas con lista y bono MAF por versión.
+9. **El Suzuki Grand Vitara ya no aparece en la gama de suzuki.cl** (sigue fuera al 12-oct-2026).
+   La línea quedó en e Vitara, Across, Swift, Fronx y Dzire. Su fila sigue en la tabla con el
+   último precio conocido, pero confirma disponibilidad antes de considerarlo.
+10. **Sin reconfirmar el 12-oct-2026** (conservan su precio anterior): Lexus LBX Urban y UX 300h,
+   Tesla Model Y (ambas), Kia Niro LX y EX Full, Kia Sportage X-Line, Kia Sorento AWD, Kia EV5
+   Wave, Haval Jolion HEV Elite, Subaru Forester Strong Hybrid y el Suzuki Grand Vitara.
+   tesla.com responde 403; la letra chica de kia.cl sólo nombra una versión por modelo (y la del
+   Niro Híbrido sigue con vigencia de enero de 2025); gwm.cl y subaru.cl publican un "desde" que
+   no abre por versión (el Forester Strong Hybrid figura ahora "desde $39.990.000", sin decir si
+   es la Sport o la Touring); y lexus.cl muestra el precio y los bonos sin dejar claro si el monto
+   publicado ya los descuenta.
+11. **El BYD Song Pro DM-i estaba mal tarifado**: sus $31.990.000 venían de la página del Song
+   PLUS DM-i, que es otro modelo. Ahora la fila lleva el precio de la Song Pro GL
+   ($24.490.000 de lista, $21.990.000 con financiamiento). Sus dimensiones siguen siendo de
+   ficha regional — están entre las marcadas con `?`.
