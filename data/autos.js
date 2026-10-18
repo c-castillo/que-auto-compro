@@ -3,11 +3,11 @@
  * sin necesidad de levantar un servidor. Editable a mano o con scripts/add-snapshot.mjs
  *
  * Precios en CLP. Dimensiones en mm. Maletero en litros. Rendimiento en km/l.
- * Última revisión de datos: 2026-10-12
+ * Última revisión de datos: 2026-10-18
  */
 window.AUTOS_DATA = {
   "meta": {
-    "actualizado": "2026-10-12",
+    "actualizado": "2026-10-18",
     "moneda": "CLP",
     "notaRendimiento": "Ojo: las cifras de ciudad homologadas en Chile (ciclo local) son mucho más optimistas que las WLTP. El 40,1 km/l del Kona y el 43,5 km/l del MG NO son comparables con el 25,6 km/l que declara Toyota. La columna 'mixto' indica su ciclo de origen.",
     "supuestos": {
@@ -145,6 +145,12 @@ window.AUTOS_DATA = {
           "precio": 25490000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 25490000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "La XG suma Toyota Safety Sense completo — pre-colisión, crucero adaptativo, luces altas automáticas y mantención de carril — más el tablero digital LED continuo, nada de lo cual trae la XI. Es el híbrido más chico de la tabla y el de maletero más grande para su largo.",
@@ -247,6 +253,12 @@ window.AUTOS_DATA = {
           "precio": 25990000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 25990000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "El punto dulce del segmento: maletero de 473 L y el rendimiento mixto más honesto de la lista (23,3 km/l medidos en el mismo ciclo que declara la ciudad).",
@@ -339,6 +351,12 @@ window.AUTOS_DATA = {
           "precio": 28990000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 28990000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "En chileautos todavía aparecen unidades 2024 con el motor 2.0 SEG. Ese motor ya no se vende nuevo acá.",
@@ -413,6 +431,12 @@ window.AUTOS_DATA = {
         },
         {
           "fecha": "2026-10-12",
+          "precio": 24390000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
+        },
+        {
+          "fecha": "2026-10-18",
           "precio": 24390000,
           "clase": "nuevo",
           "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
@@ -493,6 +517,12 @@ window.AUTOS_DATA = {
           "precio": 27590000,
           "clase": "nuevo",
           "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 27590000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
         }
       ],
       "notas": "Versión tope del Kona híbrido.",
@@ -632,6 +662,12 @@ window.AUTOS_DATA = {
           "precio": 41490000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 41490000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "El primer eléctrico de Toyota en Chile. Salta de segmento: 23 cm más largo que el Corolla Cross.",
@@ -707,6 +743,12 @@ window.AUTOS_DATA = {
           "precio": 37000000,
           "clase": "nuevo",
           "fuente": "prensa (meganoticias/autocosmos) — sin cambio"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 37000000,
+          "clase": "nuevo",
+          "fuente": "cualauto — precio referencial de lista, sin cambio desde el 11-ago-2026"
         }
       ],
       "notas": "El maletero más grande de la tabla por lejos (854 L, contando el frunk). También el más ancho: 1.982 mm puede ser un problema en estacionamientos de edificio.",
@@ -778,6 +820,12 @@ window.AUTOS_DATA = {
         },
         {
           "fecha": "2026-10-12",
+          "precio": 15990000,
+          "clase": "nuevo",
+          "fuente": "mgmotor.cl — sin cambio (versión COM)"
+        },
+        {
+          "fecha": "2026-10-18",
           "precio": 15990000,
           "clase": "nuevo",
           "fuente": "mgmotor.cl — sin cambio (versión COM)"
@@ -857,6 +905,12 @@ window.AUTOS_DATA = {
           "precio": 19990000,
           "clase": "nuevo",
           "fuente": "gwm.cl — sin cambio (promoción 2 al 31-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 19990000,
+          "clase": "nuevo",
+          "fuente": "gwm.cl — sin cambio (promoción 2 al 31-oct-2026)"
         }
       ],
       "notas": "La distancia entre ejes más larga del grupo compacto (2.700 mm) = mejor espacio atrás. Fíjate en la caída del rendimiento en carretera: 14,8 km/l es la peor de la tabla.",
@@ -925,6 +979,12 @@ window.AUTOS_DATA = {
         },
         {
           "fecha": "2026-10-12",
+          "precio": 15990000,
+          "clase": "nuevo",
+          "fuente": "Rosselot — lista y precio final con bono de financiamiento, sin cambio"
+        },
+        {
+          "fecha": "2026-10-18",
           "precio": 15990000,
           "clase": "nuevo",
           "fuente": "Rosselot — lista y precio final con bono de financiamiento, sin cambio"
@@ -1059,6 +1119,12 @@ window.AUTOS_DATA = {
           "precio": 21990000,
           "clase": "nuevo",
           "fuente": "Astara Retail — Song Pro GL, sin cambio (vigencia 31-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 21990000,
+          "clase": "nuevo",
+          "fuente": "Astara Retail — Song Pro GL, sin cambio (vigencia 31-oct-2026)"
         }
       ],
       "notas": "100 km de autonomía eléctrica (NEDC) más motor bencinero: si cargas en casa haces la ciudad casi sin bencina. Dimensiones y rendimiento por confirmar en ficha local.",
@@ -1125,6 +1191,12 @@ window.AUTOS_DATA = {
           "precio": 21990000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 21990000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "Mismo tren motriz del Corolla Cross, $3M más barato y 19 cm más bajo. Si no necesitas altura de SUV, es la opción eficiente y barata.",
@@ -1198,6 +1270,12 @@ window.AUTOS_DATA = {
         },
         {
           "fecha": "2026-10-12",
+          "precio": 29190000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
+        },
+        {
+          "fecha": "2026-10-18",
           "precio": 29190000,
           "clase": "nuevo",
           "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
@@ -1336,6 +1414,12 @@ window.AUTOS_DATA = {
           "precio": 28990000,
           "clase": "nuevo",
           "fuente": "kia.cl — letra chica Sportage Híbrido LX (vigencia 14-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 28990000,
+          "clase": "nuevo",
+          "fuente": "kia.cl — letra chica Sportage Híbrido LX (vigencia 31-oct-2026) — sin cambio"
         }
       ],
       "notas": "Primo hermano del Tucson Híbrido (misma plataforma y tren motriz), 4,5 cm más largo y con 543 L de maletero.",
@@ -1460,6 +1544,12 @@ window.AUTOS_DATA = {
           "precio": 42990000,
           "clase": "nuevo",
           "fuente": "kia.cl — letra chica Sorento Híbrido EX 2WD (vigencia 14-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 42990000,
+          "clase": "nuevo",
+          "fuente": "kia.cl — letra chica Sorento Híbrido EX 2WD (vigencia 31-oct-2026) — sin cambio"
         }
       ],
       "notas": "Otro segmento: 7 asientos y 4,8 m. Lo dejo por completitud de la marca, no porque calce con lo que buscabas.",
@@ -1537,6 +1627,12 @@ window.AUTOS_DATA = {
           "precio": 29990000,
           "clase": "nuevo",
           "fuente": "kia.cl — letra chica, sin cambio (vigencia 14-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 29990000,
+          "clase": "nuevo",
+          "fuente": "kia.cl — letra chica, sin cambio (vigencia 31-oct-2026)"
         }
       ],
       "notas": "Eléctrico coreano de marca pero fabricado en China. Dimensiones y consumo tomados de ficha regional: confírmalos.",
@@ -1603,6 +1699,12 @@ window.AUTOS_DATA = {
           "precio": 31490000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 31490000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "El híbrido japonés de referencia. Un escalón sobre el Corolla Cross en tamaño, potencia y precio; también el que mejor mantiene el valor de reventa.",
@@ -1737,6 +1839,12 @@ window.AUTOS_DATA = {
           "precio": 39990000,
           "clase": "nuevo",
           "fuente": "nissan.cl (precio con bonos) y autocosmos (lista) — Exclusive e-Power e-4orce"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 39990000,
+          "clase": "nuevo",
+          "fuente": "nissan.cl (precio con bonos) y autocosmos (lista) — Exclusive e-Power e-4orce — sin cambio"
         }
       ],
       "notas": "Híbrido en serie: las ruedas siempre las mueve el motor eléctrico y el bencinero solo genera electricidad. Se maneja como eléctrico sin necesitar enchufe.",
@@ -1760,8 +1868,8 @@ window.AUTOS_DATA = {
       "tipo": "MHEV",
       "carroceria": "SUV compacto",
       "origen": "Japón",
-      "precioNuevo": 32190000,
-      "precioNuevoNota": "Sin cambio desde septiembre de 2026, cuando subió $800.000. La gama Crosstrek arranca en $25.490.000 con la CVT Plus bencinera.",
+      "precioNuevo": 34490000,
+      "precioNuevoNota": "Precio de lista de la Touring ES. La gama Crosstrek arranca en $25.490.000 con la CVT Plus bencinera.",
       "precioUsado": 26500000,
       "precioUsadoNota": "Estimado.",
       "precioUsadoEstimado": true,
@@ -1809,6 +1917,12 @@ window.AUTOS_DATA = {
           "precio": 32190000,
           "clase": "nuevo",
           "fuente": "subaru.cl — sin cambio (vigencia 1 al 31-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 32190000,
+          "clase": "nuevo",
+          "fuente": "subaru.cl — Touring ES, lista y precio de campaña"
         }
       ],
       "notas": "Híbrido liviano: el e-Boxer casi no ahorra combustible, lo que ofrece es AWD simétrico permanente y 220 mm de despeje. Si el objetivo es gastar menos bencina, no es este.",
@@ -1823,7 +1937,9 @@ window.AUTOS_DATA = {
         }
       ],
       "paisMarca": "Japonesa",
-      "equipamiento": "tope"
+      "equipamiento": "tope",
+      "precioFinanciado": 32190000,
+      "precioFinanciadoNota": "Precio de campaña: bono directo de $1.200.000 más bono de financiamiento de $1.100.000. Los $32.190.000 que esta tabla traía como lista ya incluían ambos bonos."
     },
     {
       "id": "subaru-forester-strong-hybrid",
@@ -1835,7 +1951,7 @@ window.AUTOS_DATA = {
       "carroceria": "SUV mediano",
       "origen": "Japón",
       "precioNuevo": 41990000,
-      "precioNuevoNota": "Tope de gama. El Forester parte en $27.990.000 con la XS bencinera.",
+      "precioNuevoNota": "Tope de gama: precio de campaña de la Touring ES en subaru.cl, sin cambio desde agosto. La Sport ES queda en $39.990.000 de campaña. Ojo: subaru.cl declara para la Touring una lista igual al precio de campaña aunque lista bonos por $3.000.000, así que su precio de lista real no está claro. El Forester parte en $27.990.000 con la XS bencinera.",
       "precioUsado": null,
       "precioUsadoNota": "Generación lanzada en septiembre 2025, sin usado relevante.",
       "precioUsadoEstimado": false,
@@ -1866,6 +1982,12 @@ window.AUTOS_DATA = {
           "precio": 41990000,
           "clase": "nuevo",
           "fuente": "subaru.cl / pompeyo"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 41990000,
+          "clase": "nuevo",
+          "fuente": "subaru.cl — Touring ES, precio de campaña, sin cambio"
         }
       ],
       "notas": "Este sí es híbrido full (anda en eléctrico puro a baja velocidad), a diferencia del Crosstrek. AWD permanente y 220 mm de despeje: el más capaz fuera del pavimento de toda la tabla.",
@@ -1938,6 +2060,12 @@ window.AUTOS_DATA = {
         },
         {
           "fecha": "2026-10-12",
+          "precio": 46990000,
+          "clase": "nuevo",
+          "fuente": "autos.honda.cl — sin cambio (oferta hasta el 31-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
           "precio": 46990000,
           "clase": "nuevo",
           "fuente": "autos.honda.cl — sin cambio (oferta hasta el 31-oct-2026)"
@@ -2017,6 +2145,12 @@ window.AUTOS_DATA = {
           "precio": 39990000,
           "clase": "nuevo",
           "fuente": "mitsubishi-motors.cl — lista y precio con bonos (promoción 1 al 31-oct-2026)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 39990000,
+          "clase": "nuevo",
+          "fuente": "mitsubishi-motors.cl — lista y precio con bonos (promoción 1 al 31-oct-2026) — sin cambio"
         }
       ],
       "notas": "Enchufable con 86 km eléctricos WLTP: si cargas en casa, la ciudad la haces sin bencina. La ficha chilena menciona batería de 20 kWh, la internacional 22,7 — confirma cuál llega acá.",
@@ -2095,6 +2229,12 @@ window.AUTOS_DATA = {
           "precio": 36990000,
           "clase": "nuevo",
           "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 36990000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
         }
       ],
       "notas": "Mismo auto que el Kona híbrido pero 100% eléctrico: $9M más caro y el costo por 100 km cae a menos de un tercio. Batería y autonomía por confirmar según versión.",
@@ -2169,6 +2309,12 @@ window.AUTOS_DATA = {
           "precio": 13790000,
           "clase": "nuevo",
           "fuente": "suzuki.cl — GLX Plus, precio con bonos de marca y financiamiento"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 13790000,
+          "clase": "nuevo",
+          "fuente": "suzuki.cl — GLX Plus, precio con bonos de marca y financiamiento — sin cambio"
         }
       ],
       "notas": "El híbrido más barato de la tabla y el único hatchback chico. Ojo con la etiqueta: es mild hybrid SHVS de 12V, apenas un ISG que asiste al motor — el ahorro viene de que pesa 1 tonelada y tiene 88 HP, no de la parte eléctrica. 265 L de maletero es menos de la mitad que cualquier SUV de la lista.",
@@ -2248,6 +2394,12 @@ window.AUTOS_DATA = {
           "precio": 16290000,
           "clase": "nuevo",
           "fuente": "suzuki.cl — precio con bonos de marca y financiamiento"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 16290000,
+          "clase": "nuevo",
+          "fuente": "suzuki.cl — precio con bonos de marca y financiamiento — sin cambio"
         }
       ],
       "notas": "El SUV híbrido más barato del mercado chileno. También mild hybrid 12V. Mide menos de 4 metros: es un escalón bajo el Yaris Cross en todo, incluido el maletero (304 L).",
@@ -2325,6 +2477,12 @@ window.AUTOS_DATA = {
           "precio": 17190000,
           "clase": "nuevo",
           "fuente": "suzuki.cl — precio con bonos de marca y financiamiento"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 17190000,
+          "clase": "nuevo",
+          "fuente": "suzuki.cl — precio con bonos de marca y financiamiento — sin cambio"
         }
       ],
       "notas": "Ojo: este Across NO es el RAV4 PHEV rebautizado que Suzuki vende en Europa, es un B-SUV propio homologado en Chile en 2026. Ficha técnica incompleta: solo está publicado el largo (4,36 m), el maletero máximo (615 L) y el consumo mixto. Pide la ficha en el concesionario antes de compararlo en serio.",
@@ -2400,6 +2558,12 @@ window.AUTOS_DATA = {
           "precio": 21490000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 21490000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "Híbrido full (no mild), $1,5M más barato que el Yaris Cross, con 460 L de maletero y 23,8 km/l mixto homologado. La contra: sedán, 140 mm de despeje.",
@@ -2477,6 +2641,12 @@ window.AUTOS_DATA = {
           "precio": 14490000,
           "clase": "nuevo",
           "fuente": "mgmotor.cl — sin cambio"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 14490000,
+          "clase": "nuevo",
+          "fuente": "mgmotor.cl — sin cambio"
         }
       ],
       "notas": "Híbrido full de verdad (no mild) por menos de $17M y con 194 HP. Dimensiones tomadas de la ficha europea: confírmalas. Es el contrapunto directo al Swift — misma plata, el doble de potencia y sistema híbrido serio, pero marca china.",
@@ -2545,6 +2715,12 @@ window.AUTOS_DATA = {
           "precio": 22990000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 22990000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "Versión de entrada: no trae Toyota Safety Sense completo ni el tablero digital LED continuo de la XG.",
@@ -2629,6 +2805,12 @@ window.AUTOS_DATA = {
           "precio": 33990000,
           "clase": "nuevo",
           "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 33990000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
         }
       ],
       "notas": "Escalón intermedio del Tucson híbrido.",
@@ -2700,6 +2882,12 @@ window.AUTOS_DATA = {
           "precio": 37990000,
           "clase": "nuevo",
           "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro)"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 37990000,
+          "clase": "nuevo",
+          "fuente": "hyundai.cl — precios y financiamiento (Amicar Maestro) — sin cambio"
         }
       ],
       "notas": "Tope del Tucson híbrido y el único con tracción integral.",
@@ -2963,6 +3151,12 @@ window.AUTOS_DATA = {
           "precio": 44990000,
           "clase": "nuevo",
           "fuente": "Kovacs Toyota — lista y precio con bono MAF"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 44990000,
+          "clase": "nuevo",
+          "fuente": "Kovacs Toyota — lista y precio con bono MAF — sin cambio"
         }
       ],
       "notas": "AWD: 25 km menos de autonomía y mayor consumo que la 4x2.",
@@ -3168,6 +3362,12 @@ window.AUTOS_DATA = {
           "precio": 20590000,
           "clase": "nuevo",
           "fuente": "suzuki.cl — precio con bonos de marca y financiamiento"
+        },
+        {
+          "fecha": "2026-10-18",
+          "precio": 20590000,
+          "clase": "nuevo",
+          "fuente": "suzuki.cl — precio con bonos de marca y financiamiento — sin cambio"
         }
       ],
       "notas": "Tope del Across. Ficha técnica incompleta igual que la GL: Suzuki solo publica largo, maletero máximo y consumo.",
